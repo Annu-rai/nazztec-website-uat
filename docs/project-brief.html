@@ -1,0 +1,180 @@
+<title>NAZZTEC Project Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1B2B; --paper:#F7F8F9; --surface:#FFFFFF;
+    --brand:#17457F; --brand-deep:#0C2E52; --signal:#0FAFC4; --slate:#5C6B78;
+    --line:rgba(14,27,43,.12); --line-strong:rgba(14,27,43,.24);
+    --font-display:'Fraunces',Georgia,serif;
+    --font-body:'Public Sans',-apple-system,'Segoe UI',sans-serif;
+    --font-mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body);
+    font-size:16px; line-height:1.65;
+    padding-left:max(20px, env(safe-area-inset-left,0px));
+    padding-right:max(20px, env(safe-area-inset-right,0px));
+  }
+  [hidden]{display:none!important;}
+  img{max-width:100%;}
+  a{color:var(--brand);}
+  h1,h2,h3{font-family:var(--font-display); font-weight:600; text-wrap:balance; margin:0;}
+  p{margin:0;}
+  .doc{max-width:760px; margin:0 auto; padding-block:clamp(40px,6vw,72px) 90px;}
+
+  .doc-head{padding-bottom:28px; margin-bottom:36px; border-bottom:2px solid var(--ink);}
+  .doc-head .eyebrow{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--brand);}
+  .doc-head h1{font-size:clamp(1.7rem,3.4vw,2.35rem); margin-top:.55em; max-width:20ch;}
+  .meta-row{display:flex; flex-wrap:wrap; gap:24px; margin-top:20px;}
+  .meta-item{font-size:.86rem;}
+  .meta-item .k{font-family:var(--font-mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--slate); display:block; margin-bottom:2px;}
+
+  section.block{margin-bottom:40px;}
+  section.block h2{
+    font-size:1.15rem; display:flex; align-items:baseline; gap:.6em; margin-bottom:14px;
+  }
+  section.block h2 .n{font-family:var(--font-mono); font-size:.78rem; color:var(--brand); font-weight:400;}
+  section.block > p{max-width:66ch; color:var(--ink);}
+  section.block > p + p{margin-top:12px;}
+  .lede{font-size:1.05rem; color:var(--slate); max-width:60ch;}
+
+  ul.plain, ol.plain{margin:12px 0 0; padding-left:1.3em; display:flex; flex-direction:column; gap:8px; max-width:64ch;}
+  ul.plain li::marker, ol.plain li::marker{color:var(--brand);}
+
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:16px;}
+  .col-card{border:1px solid var(--line-strong); border-radius:4px; padding:18px 20px;}
+  .col-card h3{font-size:.92rem; font-family:var(--font-body); font-weight:700; margin-bottom:10px;}
+  .col-card.is-done h3{color:var(--brand);}
+  .col-card.is-pending h3{color:var(--slate);}
+  @media (max-width:600px){ .two-col{grid-template-columns:1fr;} }
+
+  .token-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
+  .token{display:flex; align-items:center; gap:.55em; border:1px solid var(--line-strong); border-radius:20px; padding:.4em .9em .4em .5em; font-size:.82rem;}
+  .token .sw{width:16px; height:16px; border-radius:50%; flex:none;}
+
+  .struct-list{border-top:1px solid var(--line-strong); margin-top:16px;}
+  .struct-row{display:grid; grid-template-columns:28px 1fr; gap:14px; padding:10px 0; border-bottom:1px solid var(--line); font-size:.92rem;}
+  .struct-row .num{font-family:var(--font-mono); color:var(--slate); font-size:.8rem;}
+
+  .link-card{
+    display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;
+    border:1px solid var(--line-strong); border-radius:4px; padding:16px 20px; margin-top:12px;
+  }
+  .link-card .t{font-weight:600; font-size:.95rem;}
+  .link-card .d{font-size:.84rem; color:var(--slate); margin-top:2px;}
+  .link-card a.go{font-family:var(--font-mono); font-size:.8rem; text-decoration:none; white-space:nowrap;}
+  .status{font-family:var(--font-mono); font-size:.68rem; letter-spacing:.05em; text-transform:uppercase; padding:2px 8px; border-radius:10px; margin-left:8px;}
+  .status.live{background:rgba(15,175,196,.15); color:#0C7182;}
+  .status.pending{background:rgba(92,107,120,.13); color:var(--slate);}
+
+  .note{background:rgba(23,69,127,.06); border:1px solid rgba(23,69,127,.25); border-radius:4px; padding:14px 18px; font-size:.9rem; margin-top:18px;}
+  .note b{color:var(--brand-deep);}
+
+  footer.doc-foot{margin-top:56px; padding-top:20px; border-top:1px solid var(--line); font-size:.8rem; color:var(--slate); font-family:var(--font-mono);}
+</style>
+
+<div class="doc">
+  <div class="doc-head">
+    <span class="eyebrow">Project Brief</span>
+    <h1>NAZZTEC Website Redesign — UAT v1</h1>
+    <div class="meta-row">
+      <div class="meta-item"><span class="k">Prepared for</span>HR / stakeholder review</div>
+      <div class="meta-item"><span class="k">Stage</span>Concept UAT, pre-Webflow build</div>
+      <div class="meta-item"><span class="k">Status</span>Design approved pending sign-off</div>
+    </div>
+  </div>
+
+  <section class="block">
+    <h2><span class="n">01</span>Why this project exists</h2>
+    <p class="lede">NAZZTEC's current outreach positions the company as a global technology consultancy spanning cybersecurity, cloud, managed services, digital transformation, and staff augmentation — delivered from India, Saudi Arabia, and now the United States. The existing web presence doesn't reflect that scale or positioning.</p>
+    <p>This brief covers the first UAT pass: one fully designed homepage plus the core page set, built to read as an enterprise consulting firm — in the register of Accenture, Deloitte, or Cognizant — rather than a generic IT services vendor.</p>
+  </section>
+
+  <section class="block">
+    <h2><span class="n">02</span>Scope of this UAT</h2>
+    <p>Deliberately narrow: one polished homepage and a handful of core pages, not a full 15-page site. The goal is to validate direction before scaling out content.</p>
+    <div class="two-col">
+      <div class="col-card is-done">
+        <h3>Built for this round</h3>
+        <ul class="plain">
+          <li>Homepage — all 12 sections</li>
+          <li>Services index + one reusable service-detail template</li>
+          <li>Staff Augmentation section</li>
+          <li>Webflow build spec (classes, CMS schema)</li>
+        </ul>
+      </div>
+      <div class="col-card is-pending">
+        <h3>Deferred / needs input</h3>
+        <ul class="plain">
+          <li>About Us, Careers, Contact — content pending</li>
+          <li>Insights — CMS scaffolded, no articles yet</li>
+          <li>Industries — placeholder only, needs client confirmation</li>
+          <li>Real logo, brand assets, verified contact details</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2><span class="n">03</span>Design direction</h2>
+    <p>The brief was explicit: avoid a generic startup/IT-vendor look. The direction pulls from enterprise consulting and audit conventions rather than SaaS patterns — sharp corners over rounded cards, hairline borders over drop shadows, a capability "index" instead of a scrolling icon grid.</p>
+    <div class="token-row">
+      <span class="token"><span class="sw" style="background:#17457F"></span>Brand Blue</span>
+      <span class="token"><span class="sw" style="background:#0E1B2B"></span>Ink / dark sections</span>
+      <span class="token"><span class="sw" style="background:#0FAFC4"></span>Signal accent</span>
+      <span class="token"><span class="sw" style="background:#5C6B78"></span>Slate / secondary text</span>
+    </div>
+    <p style="margin-top:14px;">Typography: <b>Fraunces</b> (serif) for headlines to read premium rather than templated, <b>Public Sans</b> for body copy, and <b>IBM Plex Mono</b> for reference codes and data — location tags, framework labels, and the eight service-line codes (CRC, TAA, PRC, BCR, CID, MSV, DTA, PCS), styled the way an audit workpaper index would reference them.</p>
+  </section>
+
+  <section class="block">
+    <h2><span class="n">04</span>Homepage structure</h2>
+    <div class="struct-list">
+      <div class="struct-row"><span class="num">01</span><span>Navigation — Home, Services, Staffing, Industries, About, Contact</span></div>
+      <div class="struct-row"><span class="num">02</span><span>Hero — "Technology. Talent. Transformation." + India / Saudi Arabia / United States coverage ledger</span></div>
+      <div class="struct-row"><span class="num">03</span><span>Global presence — three location cards (India, Saudi Arabia, United States)</span></div>
+      <div class="struct-row"><span class="num">04</span><span>Capability index — 8 service lines as a reference-coded list, not a card grid</span></div>
+      <div class="struct-row"><span class="num">05</span><span>Staff Augmentation — talent domains + "Request Talent" CTA</span></div>
+      <div class="struct-row"><span class="num">06</span><span>Why NAZZTEC — global delivery, expertise, flexible engagement, end-to-end capability</span></div>
+      <div class="struct-row"><span class="num">07</span><span>Framework &amp; regulatory expertise — ISO 27001, SOC 2, PCI DSS, GDPR, PDPL</span></div>
+      <div class="struct-row"><span class="num">08</span><span>Digital transformation — AI, ML, analytics, Power BI, automation (dark section)</span></div>
+      <div class="struct-row"><span class="num">09</span><span>Engagement models — consulting, project delivery, managed services, staff augmentation</span></div>
+      <div class="struct-row"><span class="num">10</span><span>Industries — placeholder, pending client confirmation</span></div>
+      <div class="struct-row"><span class="num">11</span><span>Closing CTA — "Let's solve your next technology challenge"</span></div>
+      <div class="struct-row"><span class="num">12</span><span>Footer — services, company, locations, social</span></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2><span class="n">05</span>Deliverables</h2>
+    <div class="link-card">
+      <div>
+        <div class="t">Homepage concept (UAT)<span class="status pending">access fix pending</span></div>
+        <div class="d">Live preview link — currently gated by Vercel login; being fixed before wider sharing.</div>
+      </div>
+    </div>
+    <div class="link-card">
+      <div>
+        <div class="t">Webflow build spec<span class="status live">internal reference</span></div>
+        <div class="d">Client-First class naming, CMS collection schemas (Services, Locations, Insights), and build order — for the Webflow builder, not for HR review.</div>
+      </div>
+    </div>
+    <div class="note"><b>Note on the live link —</b> the preview URL currently prompts a Vercel/Google sign-in before it opens. That's an access-protection setting on the hosting side, not a problem with the design itself, and is being resolved separately before this goes to HR.</div>
+  </section>
+
+  <section class="block">
+    <h2><span class="n">06</span>Next steps</h2>
+    <ol class="plain">
+      <li>Resolve the deployment access issue so the link opens without login</li>
+      <li>Circulate homepage concept for sign-off (design direction, copy tone, section order)</li>
+      <li>Confirm Industries list and supply real About/Careers/Contact copy</li>
+      <li>Build in Webflow per the spec — CMS collections first, then homepage, then service template</li>
+      <li>Publish to a staging domain for a second review round before go-live</li>
+    </ol>
+  </section>
+
+  <footer class="doc-foot">NAZZTEC — Website Redesign — UAT v1 — Draft for internal discussion</footer>
+</div>

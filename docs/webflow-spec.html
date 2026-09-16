@@ -1,0 +1,388 @@
+<title>NAZZTEC Webflow Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1B2B; --paper:#F7F8F9; --surface:#FFFFFF;
+    --brand:#17457F; --brand-deep:#0C2E52; --signal:#0FAFC4; --slate:#5C6B78;
+    --line:rgba(14,27,43,.12); --line-strong:rgba(14,27,43,.24);
+    --font-display:'Fraunces',Georgia,serif;
+    --font-body:'Public Sans',-apple-system,'Segoe UI',sans-serif;
+    --font-mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body);
+    font-size:15.5px; line-height:1.6;
+    padding-left:max(20px, env(safe-area-inset-left,0px));
+    padding-right:max(20px, env(safe-area-inset-right,0px));
+  }
+  [hidden]{display:none!important;}
+  img{max-width:100%;}
+  a{color:var(--brand);}
+  h1,h2,h3,h4{font-family:var(--font-display); font-weight:600; text-wrap:balance; margin:0;}
+  p{margin:0;}
+  code, .code{font-family:var(--font-mono); font-size:.85em;}
+
+  .layout{display:grid; grid-template-columns:240px 1fr; gap:0; max-width:1180px; margin:0 auto;}
+  .toc{
+    position:sticky; top:calc(env(safe-area-inset-top,0px) + 24px); align-self:start;
+    padding:40px 20px 40px 0; display:flex; flex-direction:column; gap:2px; max-height:calc(100vh - 48px); overflow:auto;
+  }
+  .toc a{
+    font-size:.86rem; color:var(--slate); text-decoration:none; padding:7px 10px; border-radius:3px; border-left:2px solid transparent;
+  }
+  .toc a:hover{color:var(--brand); background:rgba(23,69,127,.05);}
+  .toc a.active{color:var(--brand); border-left-color:var(--brand); font-weight:600; background:rgba(23,69,127,.06);}
+
+  main{padding:40px 0 100px 32px; border-left:1px solid var(--line); min-width:0;}
+  .doc-head{padding-bottom:36px; margin-bottom:36px; border-bottom:1px solid var(--line);}
+  .doc-head .eyebrow{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--brand);}
+  .doc-head h1{font-size:clamp(1.7rem,3vw,2.3rem); margin-top:.5em;}
+  .doc-head p{color:var(--slate); margin-top:.8em; max-width:64ch; font-size:1rem;}
+
+  section.doc-section{padding-bottom:52px; margin-bottom:52px; border-bottom:1px solid var(--line);}
+  section.doc-section:last-child{border-bottom:none;}
+  section.doc-section h2{font-size:1.5rem; margin-bottom:.3em;}
+  section.doc-section .lede{color:var(--slate); max-width:70ch; margin-bottom:24px;}
+  h3.sub{font-family:var(--font-body); font-weight:700; font-size:1rem; margin:28px 0 12px;}
+  h3.sub .tag{font-family:var(--font-mono); font-weight:400; font-size:.78rem; color:var(--slate); margin-left:8px;}
+
+  table{width:100%; border-collapse:collapse; font-size:.88rem; margin-bottom:8px;}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--font-mono); font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--slate); font-weight:500;}
+  tr:last-child td{border-bottom:1px solid var(--line-strong);}
+  .table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:4px;}
+  .table-wrap table{margin-bottom:0;}
+  .table-wrap th, .table-wrap td{border-bottom:1px solid var(--line);}
+  .table-wrap tr:last-child td{border-bottom:none;}
+
+  .tree{
+    background:var(--surface); border:1px solid var(--line); border-radius:4px;
+    padding:16px 18px; overflow-x:auto; font-family:var(--font-mono); font-size:.82rem; line-height:1.85;
+    white-space:pre;
+  }
+  .tree .cls{color:var(--brand);}
+  .tree .el{color:var(--slate);}
+  .tree .cms{color:var(--signal); background:rgba(15,175,196,.1); border-radius:2px; padding:0 3px;}
+
+  .swatch-row{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:8px;}
+  .swatch{width:150px; border:1px solid var(--line); border-radius:4px; overflow:hidden;}
+  .swatch .chip{height:52px;}
+  .swatch .meta{padding:8px 10px; font-family:var(--font-mono); font-size:.72rem;}
+  .swatch .meta b{display:block; font-family:var(--font-body); font-weight:600; font-size:.82rem; margin-bottom:2px;}
+
+  .note{
+    background:rgba(15,175,196,.07); border:1px solid rgba(15,175,196,.3); border-radius:4px;
+    padding:12px 16px; font-size:.88rem; color:var(--ink); margin-top:16px;
+  }
+  .note b{color:var(--brand-deep);}
+
+  ol.steps{margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:10px;}
+  ol.steps li{padding-left:.3em;}
+  ol.steps b{font-family:var(--font-mono); font-size:.85em; color:var(--brand);}
+
+  .pill{display:inline-block; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.05em; text-transform:uppercase; background:var(--ink); color:#fff; padding:2px 8px; border-radius:10px; margin-left:8px;}
+
+  .nav-toggle-doc{display:none;}
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding:0; border-bottom:1px solid var(--line); margin-bottom:8px;}
+    main{padding-left:0; border-left:none;}
+    .toc{display:none;}
+    .toc.open{display:flex;}
+    .nav-toggle-doc{
+      display:flex; align-items:center; justify-content:space-between; width:100%;
+      background:none; border:1px solid var(--line-strong); border-radius:4px; padding:10px 14px;
+      font-family:var(--font-mono); font-size:.8rem; color:var(--ink); cursor:pointer; margin:20px 0 0;
+    }
+  }
+</style>
+
+<div class="layout">
+  <aside class="toc" id="toc">
+    <a href="#overview">Overview</a>
+    <a href="#tokens">Design Tokens → Variables</a>
+    <a href="#structure">Global Structure</a>
+    <a href="#cms">CMS Collections</a>
+    <a href="#components">Component Class Trees</a>
+    <a href="#interactions">Interactions (IX2)</a>
+    <a href="#pages">Pages &amp; Templates</a>
+    <a href="#build-order">Build Order</a>
+  </aside>
+
+  <main>
+    <div class="doc-head">
+      <span class="eyebrow">Implementation Reference</span>
+      <h1>NAZZTEC — Webflow Build Spec</h1>
+      <p>Everything needed to rebuild the homepage concept natively in Webflow: Client-First class naming for every element, CMS Collection schemas, native interactions to replace the concept's JS, and a build order. Written against the <code>nazztec-homepage</code> concept artifact — treat that as the visual source of truth and this as the construction spec.</p>
+    </div>
+
+    <button class="nav-toggle-doc" id="tocToggle">Jump to section ▾</button>
+
+    <section class="doc-section" id="overview">
+      <h2>Overview</h2>
+      <p class="lede">This isn't a Webflow export — no Webflow API is connected in this environment, so nothing here has been built inside Webflow itself. It's a spec written so a builder (you, or a Webflow developer) can construct it directly without re-deriving structure or naming decisions.</p>
+      <div class="note"><b>Client-First primer —</b> classes are named by role, not appearance (<span class="code">section_hero</span>, not <span class="code">blue-box</span>), reused across instances via Webflow's <b>Style</b> panel (not Combo classes for one-offs), and scoped so global patterns (<span class="code">padding-global</span>, <span class="code">container-large</span>) wrap every section identically.</div>
+    </section>
+
+    <section class="doc-section" id="tokens">
+      <h2>Design Tokens → Variables</h2>
+      <p class="lede">Set these up first in <b>Webflow → Style → Variables</b> so every element references a variable, never a literal value.</p>
+
+      <h3 class="sub">Color <span class="tag">Variables/Color</span></h3>
+      <div class="swatch-row">
+        <div class="swatch"><div class="chip" style="background:#17457F"></div><div class="meta"><b>Brand/700</b>#17457F</div></div>
+        <div class="swatch"><div class="chip" style="background:#0C2E52"></div><div class="meta"><b>Brand/900</b>#0C2E52</div></div>
+        <div class="swatch"><div class="chip" style="background:#0E1B2B"></div><div class="meta"><b>Ink/900</b>#0E1B2B</div></div>
+        <div class="swatch"><div class="chip" style="background:#F7F8F9;border-bottom:1px solid #eee"></div><div class="meta"><b>Paper/100</b>#F7F8F9</div></div>
+        <div class="swatch"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #eee"></div><div class="meta"><b>Surface/White</b>#FFFFFF</div></div>
+        <div class="swatch"><div class="chip" style="background:#0FAFC4"></div><div class="meta"><b>Signal/500</b>#0FAFC4</div></div>
+        <div class="swatch"><div class="chip" style="background:#5C6B78"></div><div class="meta"><b>Slate/500</b>#5C6B78</div></div>
+        <div class="swatch"><div class="chip" style="background:#D8DEE4"></div><div class="meta"><b>Line/200</b>#D8DEE4 (12% ink)</div></div>
+      </div>
+
+      <h3 class="sub">Typography <span class="tag">Variables/Font + text styles</span></h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Role</th><th>Family</th><th>Webflow usage</th></tr>
+          <tr><td>Display</td><td>Fraunces (500/600)</td><td>All <span class="code">h1–h3</span>, section headlines — set as heading default, not per-instance</td></tr>
+          <tr><td>Body</td><td>Public Sans (400/500/600/700)</td><td>Paragraphs, nav, buttons — body default</td></tr>
+          <tr><td>Mono</td><td>IBM Plex Mono (400/500)</td><td>Eyebrows, reference codes, stat labels — <span class="code">text-style-mono</span> combo class</td></tr>
+        </table>
+      </div>
+      <div class="table-wrap" style="margin-top:10px;">
+        <table>
+          <tr><th>Text-Size token</th><th>Value (desktop)</th><th>Used for</th></tr>
+          <tr><td>heading-xl</td><td>clamp(2.3rem, 4.6vw, 3.6rem)</td><td>Hero H1</td></tr>
+          <tr><td>heading-l</td><td>clamp(1.7rem, 3vw, 2.3rem)</td><td>Section H2</td></tr>
+          <tr><td>heading-m</td><td>1.05–1.22rem</td><td>Card / row H3</td></tr>
+          <tr><td>body-l</td><td>1.02–1.08rem</td><td>Lede paragraphs</td></tr>
+          <tr><td>body-m</td><td>.9–.94rem</td><td>Card/body copy</td></tr>
+          <tr><td>mono-s</td><td>.72–.86rem</td><td>Eyebrows, codes, chips</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Spacing <span class="tag">Variables/Spacing</span></h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Token</th><th>Value</th></tr>
+          <tr><td>space-3xs / 2xs / xs</td><td>4 / 8 / 12px</td></tr>
+          <tr><td>space-s / m / l</td><td>16 / 24 / 32px</td></tr>
+          <tr><td>space-xl / 2xl / 3xl</td><td>48 / 64 / 96px</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="structure">
+      <h2>Global Structure</h2>
+      <p class="lede">Standard Client-First page shell — every page and every section nests inside this.</p>
+      <div class="tree"><span class="el">body</span>.<span class="cls">page-wrapper</span>
+  <span class="el">header</span>.<span class="cls">navbar_component</span>          <span class="el">(Symbol)</span>
+  <span class="el">main</span>.<span class="cls">main-wrapper</span>
+    <span class="el">section</span>.<span class="cls">section_[name]</span>
+      <span class="el">div</span>.<span class="cls">padding-global</span>
+        <span class="el">div</span>.<span class="cls">container-large</span>   <span class="el">(1180px) / container-medium (860px)</span>
+          <span class="el">div</span>.<span class="cls">padding-section-[large|medium]</span>
+            ...section content...
+  <span class="el">footer</span>.<span class="cls">footer_component</span>     <span class="el">(Symbol)</span></div>
+      <div class="note">Set <span class="code">padding-global</span> side padding to <b>20px</b> mobile → <b>5vw</b> desktop, matching the concept's edge gutter. <span class="code">padding-section-large</span> = 96/64px (desktop/mobile) vertical.</div>
+    </section>
+
+    <section class="doc-section" id="cms">
+      <h2>CMS Collections</h2>
+      <p class="lede">Three collections cover the v1 UAT. Team/Testimonials can be added later without touching this structure.</p>
+
+      <h3 class="sub">Collection: Services <span class="tag">/services/[slug]</span></h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Name</td><td>Plain text</td><td>e.g. "Cybersecurity, Risk &amp; Compliance"</td></tr>
+          <tr><td>Slug</td><td>Slug</td><td>Auto from Name</td></tr>
+          <tr><td>Reference Code</td><td>Plain text</td><td>3-letter code — CRC, TAA, PRC, BCR, CID, MSV, DTA, PCS</td></tr>
+          <tr><td>Short Description</td><td>Plain text</td><td>≤160 chars — index row + card summary</td></tr>
+          <tr><td>Order</td><td>Number</td><td>Controls index sort (Collection List sort by field)</td></tr>
+          <tr><td>Category</td><td>Option</td><td>Cybersecurity &amp; Risk / Audit &amp; Assurance / Cloud &amp; Infra / Managed Services / Digital &amp; Data / Consulting</td></tr>
+          <tr><td>Icon</td><td>Single image (SVG)</td><td>24×24 line icon, exported from concept's inline SVG set</td></tr>
+          <tr><td>Hero Text</td><td>Plain text</td><td>Service detail page hero line</td></tr>
+          <tr><td>Overview</td><td>Rich text</td><td>Detail page intro</td></tr>
+          <tr><td>Capabilities</td><td>Rich text</td><td>Bulleted list — detail page</td></tr>
+          <tr><td>Benefits</td><td>Rich text</td><td>Bulleted list — detail page</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Collection: Locations <span class="tag">Presence section</span></h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Name</td><td>Plain text</td><td>India / Saudi Arabia / United States</td></tr>
+          <tr><td>Code</td><td>Plain text</td><td>IN / SA / US</td></tr>
+          <tr><td>Role Description</td><td>Plain text</td><td>"Offshore delivery and technology…"</td></tr>
+          <tr><td>Order</td><td>Number</td><td>01 / 02 / 03</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">Collection: Insights <span class="tag">/insights/[slug]</span></h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Title</td><td>Plain text</td><td></td></tr>
+          <tr><td>Slug</td><td>Slug</td><td>Auto</td></tr>
+          <tr><td>Category</td><td>Option</td><td>Matches Service categories loosely</td></tr>
+          <tr><td>Author</td><td>Plain text</td><td>Reference a Team collection later if needed</td></tr>
+          <tr><td>Date</td><td>Date</td><td></td></tr>
+          <tr><td>Thumbnail</td><td>Image</td><td></td></tr>
+          <tr><td>Excerpt</td><td>Plain text</td><td>Card summary</td></tr>
+          <tr><td>Content</td><td>Rich text</td><td>Article body</td></tr>
+        </table>
+      </div>
+      <div class="note">Not required for the first UAT pass per your page-priority list — build the collection now so <b>Insights</b> in the nav isn't a dead link, but it can hold 1–2 placeholder entries until content exists.</div>
+    </section>
+
+    <section class="doc-section" id="components">
+      <h2>Component Class Trees</h2>
+      <p class="lede">Build the repeated ones as <b>Symbols</b> (Navbar, Footer, Service index row, Location card, Capability item). Static one-offs (Hero, CTA) stay plain sections.</p>
+
+      <h3 class="sub">Navbar <span class="tag">Symbol · navbar_component</span></h3>
+      <div class="tree"><span class="el">div</span>.<span class="cls">navbar_component</span>
+  <span class="el">div</span>.<span class="cls">padding-global</span>
+    <span class="el">div</span>.<span class="cls">navbar_container</span>
+      <span class="el">a</span>.<span class="cls">navbar_logo-link</span>
+      <span class="el">nav</span>.<span class="cls">navbar_menu</span>
+        <span class="el">a</span>.<span class="cls">navbar_link</span> × 6
+      <span class="el">div</span>.<span class="cls">navbar_button-wrapper</span>
+        <span class="el">a</span>.<span class="cls">button</span>.<span class="cls">is-primary</span>  <span class="el">"Talk to an Expert"</span>
+      <span class="el">div</span>.<span class="cls">navbar_menu-button</span>  <span class="el">(Webflow native navbar menu button — hamburger built-in, no custom JS needed)</span></div>
+      <div class="note">Use Webflow's native <b>Navbar</b> element, not a custom div — it ships the mobile hamburger + open/close state for free, replacing the concept's hand-rolled toggle JS.</div>
+
+      <h3 class="sub">Hero</h3>
+      <div class="tree"><span class="el">section</span>.<span class="cls">section_hero</span>
+  ...container...
+    <span class="el">div</span>.<span class="cls">hero_layout</span>          <span class="el">grid: 1.15fr .85fr</span>
+      <span class="el">div</span>.<span class="cls">hero_content</span>
+        <span class="el">div</span>.<span class="cls">text-style-mono</span>.<span class="cls">is-eyebrow</span>
+        <span class="el">h1</span>.<span class="cls">heading-style-xl</span>
+        <span class="el">p</span>.<span class="cls">text-size-medium</span>.<span class="cls">u-text-color-slate</span>
+        <span class="el">div</span>.<span class="cls">button-group</span>
+          <span class="el">a</span>.<span class="cls">button</span>.<span class="cls">is-primary</span>
+          <span class="el">a</span>.<span class="cls">button</span>.<span class="cls">is-ghost</span>
+        <span class="el">div</span>.<span class="cls">text-style-mono</span>.<span class="cls">is-flags</span>
+      <span class="el">div</span>.<span class="cls">ledger_card</span>.<span class="cls">is-dark</span>
+        <span class="el">div</span>.<span class="cls">ledger_row</span> × 5</div>
+
+      <h3 class="sub">Location Card <span class="tag">Symbol · used 3× or Collection List (Locations)</span></h3>
+      <div class="tree"><span class="el">div</span>.<span class="cls">loc_card</span>
+  <span class="el">div</span>.<span class="cls">text-style-mono</span>.<span class="cls">is-tag</span>       <span class="cms">{{Code}} — {{Order}}</span>
+  <span class="el">div</span>.<span class="cls">loc_line-graphic</span>          <span class="el">(embedded SVG, static per position)</span>
+  <span class="el">h3</span>.<span class="cls">heading-style-m</span>          <span class="cms">{{Name}}</span>
+  <span class="el">p</span>.<span class="cls">text-size-medium</span>          <span class="cms">{{Role Description}}</span></div>
+
+      <h3 class="sub">Services Index Row <span class="tag">Collection List item · Services</span></h3>
+      <div class="tree"><span class="el">a</span>.<span class="cls">index_row</span>            <span class="cms">← bound to Service item, links to {{Slug}}</span>
+  <span class="el">div</span>.<span class="cls">text-style-mono</span>.<span class="cls">is-code</span>   <span class="cms">{{Reference Code}}</span>
+  <span class="el">div</span>.<span class="cls">index_body</span>
+    <span class="el">h3</span>.<span class="cls">heading-style-m</span>       <span class="cms">{{Name}}</span>
+    <span class="el">p</span>.<span class="cls">text-size-medium</span>      <span class="cms">{{Short Description}}</span>
+  <span class="el">div</span>.<span class="cls">index_arrow</span>          <span class="el">(static SVG icon)</span></div>
+      <div class="note">Collection List wrapper: <span class="code">index_list</span>, sorted by <b>Order</b> ascending. This single template replaces all 8 hand-written rows in the concept — add a 9th service later with zero design work.</div>
+
+      <h3 class="sub">Why / Engagement Grid Item <span class="tag">Symbol, static content</span></h3>
+      <div class="tree"><span class="el">div</span>.<span class="cls">why_item</span>
+  <span class="el">div</span>.<span class="cls">text-style-mono</span>.<span class="cls">is-index</span>
+  <span class="el">h3</span>.<span class="cls">heading-style-s</span>
+  <span class="el">p</span>.<span class="cls">text-size-small</span></div>
+
+      <h3 class="sub">Framework Plate</h3>
+      <div class="tree"><span class="el">div</span>.<span class="cls">fw_plate</span>
+  <span class="el">div</span>.<span class="cls">fw_dot</span>
+  <span class="el">div</span>.<span class="cls">text-style-mono</span></div>
+
+      <h3 class="sub">Digital Capability Item <span class="tag">Symbol × 5, dark section</span></h3>
+      <div class="tree"><span class="el">div</span>.<span class="cls">cap_item</span>
+  <span class="el">div</span>.<span class="cls">cap_icon</span>       <span class="el">(SVG, is-signal color)</span>
+  <span class="el">div</span>.<span class="cls">text-size-small</span>.<span class="cls">u-text-color-white</span></div>
+
+      <h3 class="sub">Footer <span class="tag">Symbol · footer_component</span></h3>
+      <div class="tree"><span class="el">footer</span>.<span class="cls">footer_component</span>
+  ...container...
+    <span class="el">div</span>.<span class="cls">footer_top-wrapper</span>       <span class="el">grid: 1.4fr 1fr 1fr 1fr</span>
+      <span class="el">div</span>.<span class="cls">footer_brand-block</span>
+      <span class="el">div</span>.<span class="cls">footer_link-block</span> × 3
+        <span class="el">div</span>.<span class="cls">text-style-mono</span>.<span class="cls">is-label</span>
+        <span class="el">a</span>.<span class="cls">footer_link</span> × n
+    <span class="el">div</span>.<span class="cls">footer_bottom-wrapper</span>
+      <span class="el">div</span>.<span class="cls">text-size-small</span>
+      <span class="el">div</span>.<span class="cls">footer_social-list</span></div>
+    </section>
+
+    <section class="doc-section" id="interactions">
+      <h2>Interactions (IX2)</h2>
+      <p class="lede">Everything the concept did in vanilla JS maps to native Webflow interactions — no custom code embed required.</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Concept behavior</th><th>Webflow equivalent</th></tr>
+          <tr><td>Section fade/slide-in on scroll</td><td><b>While scrolling in view</b> trigger on each <span class="code">[data-reveal]</span> equivalent (add class <span class="code">is-reveal</span>), Move 14px + Opacity 0→100%, per-section, once</td></tr>
+          <tr><td>Sticky nav shadow after scroll</td><td><b>Scroll into view</b> / <b>Page scroll</b> trigger on Navbar → add <span class="code">is-scrolled</span> class past 8px (Webflow: "While page is scrolling," 0–20px range)</td></tr>
+          <tr><td>Mobile hamburger open/close</td><td>Native Navbar component open/close states — built-in, no IX2 needed</td></tr>
+          <tr><td>Index row hover (arrow shift, tint)</td><td>Native <b>Hover</b> state on Combo class, no IX2 needed</td></tr>
+          <tr><td>Stat count-up (3 / 8 / 4)</td><td>Rebuild as a short IX2 <b>While scrolling in view</b> + Lottie number count, or keep as a tiny embedded script — this one is reasonable to keep as code since Webflow has no native counter</td></tr>
+          <tr><td>Canvas node-network ambient background</td><td>Recreate as a looping Lottie/video background, or keep the concept's small canvas script as an embed — do not rebuild in pure Webflow interactions</td></tr>
+        </table>
+      </div>
+      <div class="note">Respect reduced motion: in Webflow, duplicate the reveal interaction set as <b>None</b> when <span class="code">prefers-reduced-motion</span> — Webflow doesn't expose this natively, so gate it with a one-line custom code check that toggles a body class, same as the concept.</div>
+    </section>
+
+    <section class="doc-section" id="pages">
+      <h2>Pages &amp; Templates</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Page</th><th>Type</th><th>Priority</th></tr>
+          <tr><td>Homepage</td><td>Static</td><td>Build fully — all 12 sections</td></tr>
+          <tr><td>Services (index)</td><td>Static + Collection List</td><td>Build fully</td></tr>
+          <tr><td>Services detail</td><td>Collection Page template</td><td>Build one, reused for all 8 via CMS</td></tr>
+          <tr><td>Staff Augmentation</td><td>Static</td><td>Build fully</td></tr>
+          <tr><td>About Us</td><td>Static</td><td>Build fully</td></tr>
+          <tr><td>Contact</td><td>Static + native Form</td><td>Build fully</td></tr>
+          <tr><td>Insights</td><td>Collection List + template</td><td>Scaffold only — placeholder entries</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="build-order">
+      <h2>Build Order</h2>
+      <ol class="steps">
+        <li><b>01</b> Set up Variables (color, type, spacing) in Style panel</li>
+        <li><b>02</b> Set global type styles (H1–H3, body, mono) and the <span class="code">page-wrapper</span> / <span class="code">padding-global</span> / <span class="code">container-large</span> base classes</li>
+        <li><b>03</b> Build Navbar Symbol and Footer Symbol first — they touch every page</li>
+        <li><b>04</b> Create the 3 CMS Collections and enter real content (start with Services — it's the load-bearing one)</li>
+        <li><b>05</b> Build the Homepage section by section, top to bottom, binding the Services index and Locations cards to their Collection Lists as you go</li>
+        <li><b>06</b> Build the Services Collection Page template, bind all fields</li>
+        <li><b>07</b> Build Staff Augmentation, About, Contact as static pages reusing the same section/component classes</li>
+        <li><b>08</b> Add IX2 interactions per the table above; add the reduced-motion body-class embed</li>
+        <li><b>09</b> Responsive QA at 1440 / 991 / 767 / 479px breakpoints</li>
+        <li><b>10</b> Publish to staging — e.g. <span class="code">nazztec-redesign.webflow.io</span> — for client review</li>
+      </ol>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  var toggle = document.getElementById('tocToggle');
+  var toc = document.getElementById('toc');
+  if (toggle){
+    toggle.addEventListener('click', function(){ toc.classList.toggle('open'); });
+  }
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+  function onScroll(){
+    var y = window.scrollY + 120;
+    var active = 0;
+    sections.forEach(function(s, i){ if (s && s.offsetTop <= y) active = i; });
+    links.forEach(function(l, i){ l.classList.toggle('active', i === active); });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
