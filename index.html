@@ -56,8 +56,14 @@
     text-decoration:none; border:1px solid transparent; transition:transform .18s ease, background .18s ease, border-color .18s ease;
   }
   .btn:focus-visible{outline:2px solid var(--signal); outline-offset:2px;}
-  .btn-primary{background:var(--brand); color:#fff; box-shadow:0 14px 30px -12px rgba(23,69,127,.55);}
+  .btn-primary{background:var(--brand); color:#fff; box-shadow:0 14px 30px -12px rgba(23,69,127,.55); position:relative; overflow:hidden;}
   .btn-primary:hover{background:var(--brand-deep); box-shadow:0 18px 36px -12px rgba(23,69,127,.65); transform:translateY(-1px);}
+  .btn-primary::after{
+    content:""; position:absolute; top:0; left:-60%; width:45%; height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,.4), transparent);
+    transform:skewX(-20deg); transition:left .6s ease;
+  }
+  .btn-primary:hover::after{left:130%;}
   .btn-ghost{border-color:var(--line-strong); color:var(--ink);}
   .btn-ghost:hover{border-color:var(--brand); color:var(--brand);}
   .btn-ghost.on-dark{border-color:rgba(255,255,255,.35); color:#fff;}
@@ -124,7 +130,6 @@
     transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
   }
   .flagship-card:hover{
-    transform:translateY(-6px);
     border-color:rgba(15,175,196,.45);
     box-shadow:0 24px 50px -20px rgba(15,175,196,.35);
   }
@@ -294,9 +299,38 @@
   }
 
   :focus-visible{outline:2px solid var(--signal); outline-offset:2px;}
+
+  .scroll-progress{position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg, var(--brand), var(--signal)); z-index:100;}
+
+  .orb{position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; z-index:0;}
+  .orb-a{width:380px; height:380px; background:radial-gradient(circle, rgba(15,175,196,.5), transparent 70%); top:-140px; right:-90px; animation:orbFloatA 16s ease-in-out infinite;}
+  .orb-b{width:320px; height:320px; background:radial-gradient(circle, rgba(23,69,127,.55), transparent 70%); bottom:-140px; left:-80px; animation:orbFloatB 20s ease-in-out infinite;}
+  @keyframes orbFloatA{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-36px,44px) scale(1.15);}}
+  @keyframes orbFloatB{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(44px,-30px) scale(1.12);}}
+  @media (prefers-reduced-motion:reduce){ .orb{animation:none;} }
+
+  .section-divider{line-height:0; margin-top:-2px; position:relative; z-index:2;}
+  .section-divider svg{width:100%; height:44px; display:block;}
+
+  .flagship-card, .why-item, .eng-item, .loc-card{
+    opacity:0; transform:translateY(18px);
+    transition:opacity .6s ease, transform .35s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .flagship-grid.visible .flagship-card,
+  .why-grid.visible .why-item,
+  .eng-grid.visible .eng-item,
+  .loc-grid.visible .loc-card{ opacity:1; transform:translateY(0); }
+  .flagship-card:nth-child(1){transition-delay:.05s;} .flagship-card:nth-child(2){transition-delay:.18s;} .flagship-card:nth-child(3){transition-delay:.31s;}
+  .why-item:nth-child(1){transition-delay:.03s;} .why-item:nth-child(2){transition-delay:.12s;} .why-item:nth-child(3){transition-delay:.21s;} .why-item:nth-child(4){transition-delay:.3s;}
+  .eng-item:nth-child(1){transition-delay:.03s;} .eng-item:nth-child(2){transition-delay:.12s;} .eng-item:nth-child(3){transition-delay:.21s;} .eng-item:nth-child(4){transition-delay:.3s;}
+  .loc-card:nth-child(1){transition-delay:.05s;} .loc-card:nth-child(2){transition-delay:.18s;} .loc-card:nth-child(3){transition-delay:.31s;}
+  @media (prefers-reduced-motion:reduce){
+    .flagship-card, .why-item, .eng-item, .loc-card{opacity:1; transform:none; transition:none;}
+  }
 </style>
 </head>
 <body>
+<div class="scroll-progress" id="scrollProgress"></div>
 <header class="site" id="siteHeader">
   <div class="wrap nav-row">
     <a href="#hero" class="wordmark">NAZZTEC<span>Global</span></a>
@@ -327,6 +361,8 @@
 
 <main>
   <section id="hero">
+    <div class="orb orb-a" aria-hidden="true"></div>
+    <div class="orb orb-b" aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-head" data-reveal>
         <span class="eyebrow">Trusted for <span class="rotator" id="heroRotator">Cybersecurity</span></span>
@@ -356,6 +392,10 @@
       </div>
     </div>
   </section>
+
+  <div class="section-divider" aria-hidden="true">
+    <svg viewBox="0 0 1440 44" preserveAspectRatio="none"><polygon points="0,44 1440,0 1440,44" fill="#0E1B2B"/></svg>
+  </div>
 
   <section id="flagship">
     <div class="wrap">
@@ -665,9 +705,28 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var header = document.getElementById('siteHeader');
+  var progressBar = document.getElementById('scrollProgress');
   window.addEventListener('scroll', function(){
     header.classList.toggle('scrolled', window.scrollY > 8);
+    if (progressBar){
+      var h = document.documentElement;
+      var scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      progressBar.style.width = scrolled + '%';
+    }
   }, {passive:true});
+
+  if (!reduce){
+    document.querySelectorAll('.flagship-card').forEach(function(card){
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        var x = e.clientX - r.left, y = e.clientY - r.top;
+        var rotateY = ((x - r.width/2) / (r.width/2)) * 6;
+        var rotateX = -((y - r.height/2) / (r.height/2)) * 6;
+        card.style.transform = 'perspective(700px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-6px)';
+      });
+      card.addEventListener('mouseleave', function(){ card.style.transform = ''; });
+    });
+  }
 
   var navToggle = document.getElementById('navToggle');
   var mobilePanel = document.getElementById('mobilePanel');
