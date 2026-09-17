@@ -205,9 +205,27 @@
   @media (max-width:560px){ .eng-row{grid-template-columns:1fr;} }
 
   /* industries */
-  .ind-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:24px;}
-  .ind-chip{border:1px dashed var(--line-strong); border-radius:2px; padding:.6em 1.1em; font-size:.88rem; color:var(--slate);}
-  .ind-note{font-family:var(--font-mono); font-size:.76rem; color:var(--slate); margin-top:20px;}
+  .industries-head{display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:8px;}
+  .tbc-badge{
+    font-family:var(--font-mono); font-size:.72rem; letter-spacing:.04em; color:var(--slate);
+    border:1px dashed var(--line-strong); border-radius:20px; padding:.5em 1em; white-space:nowrap; background:#fff;
+  }
+  .ind-row{display:grid; grid-template-columns:repeat(6,1fr); gap:16px; margin-top:36px;}
+  .ind-chip{
+    display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center;
+    background:var(--cream); border:1px solid var(--line-strong); border-top:3px solid var(--brand);
+    padding:26px 14px; font-size:.92rem; font-weight:600; color:var(--ink);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .ind-chip:hover{transform:translateY(-5px); box-shadow:0 22px 42px -26px rgba(20,24,31,.26);}
+  .ind-chip .ic{
+    width:44px; height:44px; border-radius:50%; border:1.5px solid var(--brand);
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .ind-chip .ic svg{width:20px; height:20px; color:var(--brand);}
+  .ind-note{font-family:var(--font-mono); font-size:.76rem; color:var(--slate); margin-top:22px;}
+  @media (max-width:900px){ .ind-row{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:520px){ .ind-row{grid-template-columns:repeat(2,1fr);} }
 
   /* cta */
   #cta{background:var(--ink); color:#fff; position:relative; overflow:hidden;}
@@ -452,15 +470,38 @@
 
   <section id="industries">
     <div class="wrap">
-      <span class="eyebrow">Industries</span>
-      <h2 style="font-size:clamp(1.6rem,2.8vw,2.1rem); max-width:28ch;">Sectors we're positioning around</h2>
+      <div class="industries-head">
+        <div>
+          <span class="eyebrow">Industries</span>
+          <h2 style="font-size:clamp(1.7rem,3vw,2.3rem); max-width:28ch;">Sectors we're positioning around</h2>
+        </div>
+        <span class="tbc-badge">Pending client confirmation</span>
+      </div>
       <div class="ind-row" data-reveal>
-        <span class="ind-chip">Financial Services</span>
-        <span class="ind-chip">Government</span>
-        <span class="ind-chip">Healthcare</span>
-        <span class="ind-chip">Technology</span>
-        <span class="ind-chip">Energy</span>
-        <span class="ind-chip">Enterprise</span>
+        <div class="ind-chip">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9 L12 4 L21 9"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="5" y1="9" x2="5" y2="18"/><line x1="9" y1="9" x2="9" y2="18"/><line x1="15" y1="9" x2="15" y2="18"/><line x1="19" y1="9" x2="19" y2="18"/><line x1="3" y1="20" x2="21" y2="20"/></svg></div>
+          Financial Services
+        </div>
+        <div class="ind-chip">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 21V4l10 4-10 4"/></svg></div>
+          Government
+        </div>
+        <div class="ind-chip">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+          Healthcare
+        </div>
+        <div class="ind-chip">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="7" width="10" height="10" rx="1"/><line x1="12" y1="2" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="22"/><line x1="2" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="22" y2="12"/></svg></div>
+          Technology
+        </div>
+        <div class="ind-chip">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="13 2 4 14 11 14 10 22 20 9 13 9 13 2"/></svg></div>
+          Energy
+        </div>
+        <div class="ind-chip">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="3" width="14" height="18" rx="1"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="14" x2="19" y2="14"/><line x1="10" y1="3" x2="10" y2="21"/></svg></div>
+          Enterprise
+        </div>
       </div>
       <p class="ind-note">Draft placeholder — industry focus to be confirmed with NAZZTEC before this section goes live.</p>
     </div>
