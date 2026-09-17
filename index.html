@@ -100,6 +100,18 @@
   .hero-cta-row{display:flex; flex-wrap:wrap; gap:14px; margin-top:2em;}
   .hero-flags{margin-top:2.2em; font-family:var(--font-mono); font-size:.78rem; letter-spacing:.06em; color:var(--slate); display:flex; gap:.6em; align-items:center;}
   .hero-flags b{color:var(--ink); font-weight:500;}
+  .rotator{color:var(--brand); display:inline-block; transition:opacity .35s ease, transform .35s ease;}
+  .rotator.swap{opacity:0; transform:translateY(4px);}
+
+  #flagship{background:var(--ink); color:var(--paper);}
+  .flagship-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.14);}
+  .flagship-card{background:#0E1B2B; padding:36px 30px; display:flex; flex-direction:column; gap:14px; transition:background .25s ease, transform .25s ease;}
+  .flagship-card:hover{background:#132840; transform:translateY(-4px);}
+  .flagship-card svg{width:34px; height:34px; color:var(--signal);}
+  .flagship-card h3{color:#fff; font-size:1.3rem;}
+  .flagship-card p{color:rgba(243,245,247,.72); font-size:.92rem; line-height:1.6;}
+  .flagship-tag{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; color:var(--signal); margin-top:auto; padding-top:12px; border-top:1px solid rgba(255,255,255,.14);}
+  @media (max-width:860px){ .flagship-grid{grid-template-columns:1fr;} }
 
   .ledger-card{
     background:var(--ink); color:var(--paper); border-radius:var(--radius);
@@ -273,7 +285,7 @@
   <section id="hero">
     <div class="wrap">
       <div class="hero-head" data-reveal>
-        <span class="eyebrow">Technology &amp; Risk Consulting</span>
+        <span class="eyebrow">Trusted for <span class="rotator" id="heroRotator">Cybersecurity</span></span>
         <h1>Technology.<br>Talent.<br>Transformation.</h1>
         <p class="lede">NAZZTEC helps organizations accelerate transformation through cybersecurity, cloud, managed services, digital solutions, and specialized technology talent.</p>
         <div class="hero-cta-row">
@@ -296,6 +308,35 @@
             <div class="row"><span>Service domains</span><span class="code">8 ACTIVE</span></div>
             <div class="row"><span>Engagement models</span><span class="code">4 TYPES</span></div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="flagship">
+    <div class="wrap">
+      <div data-reveal style="margin-bottom:40px; max-width:62ch;">
+        <span class="eyebrow on-dark">Where We Lead</span>
+        <h2 style="color:#fff; font-size:clamp(1.9rem,3.6vw,2.6rem); margin-top:.4em;">Built for the industries that can't afford to get this wrong.</h2>
+      </div>
+      <div class="flagship-grid" data-reveal>
+        <div class="flagship-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 L20 6 V11 C20 16 16.5 19.5 12 21 C7.5 19.5 4 16 4 11 V6 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg>
+          <h3>Cybersecurity</h3>
+          <p>GRC, IAM/PAM, and virtual CISO advisory — audit-grade security that satisfies regulators and boards, not just checklists.</p>
+          <span class="flagship-tag">Ref. CRC · TAA</span>
+        </div>
+        <div class="flagship-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9 L12 4 L21 9"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="5" y1="9" x2="5" y2="18"/><line x1="9" y1="9" x2="9" y2="18"/><line x1="15" y1="9" x2="15" y2="18"/><line x1="19" y1="9" x2="19" y2="18"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+          <h3>Banking &amp; Financial Services</h3>
+          <p>Compliance-first delivery across ISO 27001, SOC 2, PCI DSS, GDPR and PDPL — the frameworks regulated institutions require.</p>
+          <span class="flagship-tag">Ref. PRC · Frameworks</span>
+        </div>
+        <div class="flagship-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.1 9.1 4 4 0 0 0 7 18z"/></svg>
+          <h3>IT &amp; Cloud Services</h3>
+          <p>Cloud migration, DevOps, and managed NOC/SOC — 24/7 operational support across AWS, Azure, GCP and OCI.</p>
+          <span class="flagship-tag">Ref. CID · MSV</span>
         </div>
       </div>
     </div>
@@ -570,6 +611,20 @@
   mobilePanel.querySelectorAll('a').forEach(function(a){
     a.addEventListener('click', function(){ mobilePanel.classList.remove('open'); });
   });
+
+  var rotatorWords = ['Cybersecurity', 'Banking & Financial Services', 'IT & Cloud Services'];
+  var rotatorEl = document.getElementById('heroRotator');
+  if (rotatorEl && !reduce){
+    var rIdx = 0;
+    setInterval(function(){
+      rotatorEl.classList.add('swap');
+      setTimeout(function(){
+        rIdx = (rIdx + 1) % rotatorWords.length;
+        rotatorEl.textContent = rotatorWords[rIdx];
+        rotatorEl.classList.remove('swap');
+      }, 350);
+    }, 2400);
+  }
 
   if ('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
