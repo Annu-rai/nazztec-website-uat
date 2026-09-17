@@ -185,30 +185,47 @@
   }
   .stat .label{font-size:.76rem; color:var(--slate); letter-spacing:.05em; text-transform:uppercase; margin-top:6px; display:block;}
 
-  .loc-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
-  .loc-card{background:var(--surface); padding:28px 26px; display:flex; flex-direction:column; gap:14px;}
+  .icon-badge{
+    width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none;
+    background:linear-gradient(135deg, var(--brand), var(--signal));
+    box-shadow:0 10px 22px -10px rgba(23,69,127,.5);
+  }
+  .icon-badge svg{width:23px; height:23px; color:#fff;}
+  .icon-badge.sm{width:38px; height:38px;}
+  .icon-badge.sm svg{width:18px; height:18px;}
+
+  .loc-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .loc-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    padding:30px 26px; display:flex; flex-direction:column; gap:14px;
+    transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .loc-card:hover{transform:translateY(-5px); border-color:rgba(23,69,127,.28); box-shadow:0 22px 44px -24px rgba(14,27,43,.3);}
   .loc-card .tag{font-family:var(--font-mono); font-size:.72rem; color:var(--brand); letter-spacing:.1em;}
   .loc-card h3{font-size:1.2rem;}
   .loc-card p{color:var(--slate); font-size:.92rem; line-height:1.55;}
-  .node-line{width:100%; height:36px;}
+  .node-line{width:100%; height:32px; opacity:.8;}
   @media (max-width:760px){ .loc-grid{grid-template-columns:1fr;} }
 
   .index-list{border-top:1px solid var(--line-strong);}
   .index-row{
-    display:grid; grid-template-columns:64px 1fr 46px; gap:22px; align-items:start;
-    padding-block:26px; border-bottom:1px solid var(--line); text-decoration:none; color:inherit;
-    transition:background .18s ease;
+    display:grid; grid-template-columns:52px 1fr 46px; gap:22px; align-items:center;
+    padding:20px 16px; margin-block:4px; border-radius:10px; border-bottom:1px solid var(--line);
+    text-decoration:none; color:inherit;
+    transition:background .2s ease, box-shadow .2s ease, transform .2s ease;
   }
-  .index-row:hover{background:rgba(23,69,127,.035);}
-  .index-row .code{font-family:var(--font-mono); font-size:.82rem; color:var(--slate); padding-top:.3em;}
+  .index-row:hover{background:var(--surface); box-shadow:0 18px 40px -26px rgba(14,27,43,.35); transform:translateX(4px);}
+  .index-row .idx-mark{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;}
+  .index-row .code{font-family:var(--font-mono); font-size:.68rem; color:var(--slate); display:block; text-align:center; margin-top:6px; letter-spacing:.04em;}
   .index-row .body h3{font-size:1.22rem; margin-bottom:.32em;}
   .index-row .body p{color:var(--slate); font-size:.94rem; line-height:1.55; max-width:62ch;}
   .index-row .arrow{display:flex; justify-content:flex-end; padding-top:.35em;}
   .index-row .arrow svg{width:18px; height:18px; color:var(--slate); transition:transform .18s ease, color .18s ease;}
   .index-row:hover .arrow svg{transform:translate(3px,-3px); color:var(--brand);}
   @media (max-width:640px){
-    .index-row{grid-template-columns:40px 1fr; }
+    .index-row{grid-template-columns:44px 1fr; }
     .index-row .arrow{display:none;}
+    .index-row .code{display:none;}
   }
 
   #staffing{background:var(--surface); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
@@ -223,10 +240,14 @@
   }
   @media (max-width:820px){ .staff-grid{grid-template-columns:1fr; gap:30px;} }
 
-  .why-grid{display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); border-left:none;}
-  .why-item{padding:30px 26px; border-left:1px solid var(--line);}
-  .why-item .idx{font-family:var(--font-mono); font-size:.74rem; color:var(--brand); display:block; margin-bottom:14px;}
-  .why-item h3{font-size:1.08rem; margin-bottom:.5em;}
+  .why-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .why-item{
+    padding:32px 26px; border:1px solid var(--line); border-radius:10px; background:var(--surface);
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .why-item:hover{transform:translateY(-5px); border-color:rgba(23,69,127,.28); box-shadow:0 22px 44px -24px rgba(14,27,43,.3);}
+  .why-item .idx{font-family:var(--font-mono); font-size:.7rem; color:var(--slate); letter-spacing:.05em;}
+  .why-item h3{font-size:1.1rem;}
   .why-item p{color:var(--slate); font-size:.9rem; line-height:1.55;}
   @media (max-width:900px){ .why-grid{grid-template-columns:1fr 1fr;} }
   @media (max-width:560px){ .why-grid{grid-template-columns:1fr;} }
@@ -252,9 +273,13 @@
   .cap-item span{font-size:.9rem; font-weight:500; color:#fff;}
   @media (max-width:860px){ .cap-row{grid-template-columns:repeat(2,1fr);} }
 
-  .eng-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
-  .eng-item{background:var(--surface); padding:28px 24px;}
-  .eng-item h3{font-size:1.05rem; margin-bottom:.5em;}
+  .eng-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .eng-item{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:30px 24px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .eng-item:hover{transform:translateY(-5px); border-color:rgba(23,69,127,.28); box-shadow:0 22px 44px -24px rgba(14,27,43,.3);}
+  .eng-item h3{font-size:1.05rem;}
   .eng-item p{color:var(--slate); font-size:.9rem; line-height:1.5;}
   @media (max-width:860px){ .eng-grid{grid-template-columns:1fr 1fr;} }
   @media (max-width:560px){ .eng-grid{grid-template-columns:1fr;} }
@@ -465,22 +490,25 @@
 
       <div class="loc-grid" data-reveal>
         <div class="loc-card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></div>
           <span class="tag">IN — 01</span>
-          <svg class="node-line" viewBox="0 0 160 36" fill="none"><circle cx="14" cy="18" r="3" fill="#17457F"/><circle cx="80" cy="10" r="3" fill="#0FAFC4"/><circle cx="146" cy="24" r="3" fill="#17457F"/><path d="M14 18 L80 10 L146 24" stroke="#D8DEE4" stroke-width="1"/></svg>
           <h3>India</h3>
           <p>Offshore delivery and technology — engineering, audit execution, and platform engineering capacity.</p>
+          <svg class="node-line" viewBox="0 0 160 36" fill="none"><circle cx="14" cy="18" r="3" fill="#17457F"/><circle cx="80" cy="10" r="3" fill="#0FAFC4"/><circle cx="146" cy="24" r="3" fill="#17457F"/><path d="M14 18 L80 10 L146 24" stroke="#D8DEE4" stroke-width="1"/></svg>
         </div>
         <div class="loc-card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></div>
           <span class="tag">SA — 02</span>
-          <svg class="node-line" viewBox="0 0 160 36" fill="none"><circle cx="14" cy="24" r="3" fill="#17457F"/><circle cx="80" cy="14" r="3" fill="#0FAFC4"/><circle cx="146" cy="10" r="3" fill="#17457F"/><path d="M14 24 L80 14 L146 10" stroke="#D8DEE4" stroke-width="1"/></svg>
           <h3>Saudi Arabia</h3>
           <p>Regional consulting and client services — on-the-ground advisory across the Kingdom.</p>
+          <svg class="node-line" viewBox="0 0 160 36" fill="none"><circle cx="14" cy="24" r="3" fill="#17457F"/><circle cx="80" cy="14" r="3" fill="#0FAFC4"/><circle cx="146" cy="10" r="3" fill="#17457F"/><path d="M14 24 L80 14 L146 10" stroke="#D8DEE4" stroke-width="1"/></svg>
         </div>
         <div class="loc-card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg></div>
           <span class="tag">US — 03</span>
-          <svg class="node-line" viewBox="0 0 160 36" fill="none"><circle cx="14" cy="10" r="3" fill="#17457F"/><circle cx="80" cy="22" r="3" fill="#0FAFC4"/><circle cx="146" cy="16" r="3" fill="#17457F"/><path d="M14 10 L80 22 L146 16" stroke="#D8DEE4" stroke-width="1"/></svg>
           <h3>United States</h3>
           <p>Global client engagement — the newest NAZZTEC entity, extending reach across North America.</p>
+          <svg class="node-line" viewBox="0 0 160 36" fill="none"><circle cx="14" cy="10" r="3" fill="#17457F"/><circle cx="80" cy="22" r="3" fill="#0FAFC4"/><circle cx="146" cy="16" r="3" fill="#17457F"/><path d="M14 10 L80 22 L146 16" stroke="#D8DEE4" stroke-width="1"/></svg>
         </div>
       </div>
     </div>
@@ -495,42 +523,42 @@
 
       <div class="index-list" data-reveal>
         <a class="index-row" href="#">
-          <span class="code">CRC</span>
+          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 L20 6 V11 C20 16 16.5 19.5 12 21 C7.5 19.5 4 16 4 11 V6 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg></div><span class="code">CRC</span></div>
           <div class="body"><h3>Cybersecurity, Risk &amp; Compliance</h3><p>Security audits and assessments, GRC programs, IAM &amp; PAM, and virtual CISO advisory.</p></div>
           <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
         </a>
         <a class="index-row" href="#">
-          <span class="code">TAA</span>
+          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="4" width="12" height="16" rx="2"/><rect x="9" y="2" width="6" height="3" rx="1"/><polyline points="9 12 11 14 15 9"/></svg></div><span class="code">TAA</span></div>
           <div class="body"><h3>Technology Audit &amp; Assurance</h3><p>IT audits, technology control reviews, and IT governance and risk assessments.</p></div>
           <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
         </a>
         <a class="index-row" href="#">
-          <span class="code">PRC</span>
+          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><span class="code">PRC</span></div>
           <div class="body"><h3>Privacy &amp; Regulatory Compliance</h3><p>Data privacy audits, GDPR and PDPL compliance programs, and privacy risk assessments.</p></div>
           <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
         </a>
         <a class="index-row" href="#">
-          <span class="code">BCR</span>
+          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12a8 8 0 0 1 14-5.3L20 8"/><polyline points="20 4 20 8 16 8"/><path d="M20 12a8 8 0 0 1-14 5.3L4 16"/><polyline points="4 20 4 16 8 16"/></svg></div><span class="code">BCR</span></div>
           <div class="body"><h3>Business Continuity &amp; Resilience</h3><p>BCM assessments, business impact analysis, disaster recovery, and operational resilience.</p></div>
           <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
         </a>
         <a class="index-row" href="#">
-          <span class="code">CID</span>
+          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.1 9.1 4 4 0 0 0 7 18z"/></svg></div><span class="code">CID</span></div>
           <div class="body"><h3>Cloud, Infrastructure &amp; DevOps</h3><p>AWS, Azure, Google Cloud and OCI services, infrastructure modernization, and platform engineering.</p></div>
           <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
         </a>
         <a class="index-row" href="#">
-          <span class="code">MSV</span>
+          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M20 19v1a3 3 0 0 1-3 3h-3"/></svg></div><span class="code">MSV</span></div>
           <div class="body"><h3>Managed Services</h3><p>Application and infrastructure managed services, NOC and SOC as a service, and service desk support.</p></div>
           <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
         </a>
         <a class="index-row" href="#">
-          <span class="code">DTA</span>
+          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="12" width="3.4" height="8"/><rect x="10.3" y="7" width="3.4" height="13"/><rect x="16.6" y="3" width="3.4" height="17"/></svg></div><span class="code">DTA</span></div>
           <div class="body"><h3>Digital Transformation &amp; Analytics</h3><p>AI, machine learning, data analytics, Power BI and business intelligence, and process automation.</p></div>
           <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
         </a>
         <a class="index-row" href="#">
-          <span class="code">PCS</span>
+          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="3" y1="13" x2="21" y2="13"/></svg></div><span class="code">PCS</span></div>
           <div class="body"><h3>Professional Consulting</h3><p>Program and project management, PMO services, service delivery management, and technology advisory.</p></div>
           <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
         </a>
@@ -569,10 +597,22 @@
         <h2 style="font-size:clamp(1.7rem,3vw,2.3rem); margin-top:.4em;">A partner across the full lifecycle, not just the project.</h2>
       </div>
       <div class="why-grid" data-reveal>
-        <div class="why-item"><span class="idx">01</span><h3>Global Delivery</h3><p>India, Saudi Arabia and United States presence, combining local presence with offshore capacity.</p></div>
-        <div class="why-item"><span class="idx">02</span><h3>Specialized Expertise</h3><p>Experienced consultants across technology and functional domains, drawn from MNCs, GSIs and Big4 firms.</p></div>
-        <div class="why-item"><span class="idx">03</span><h3>Flexible Engagement</h3><p>Projects, consulting, managed services and staff augmentation — structured around how you need to buy.</p></div>
-        <div class="why-item"><span class="idx">04</span><h3>End-to-End Capability</h3><p>From assessment and strategy through implementation and ongoing operations.</p></div>
+        <div class="why-item">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a15 15 0 0 1 0 18"/><path d="M12 3a15 15 0 0 0 0 18"/></svg></div>
+          <span class="idx">01</span><h3>Global Delivery</h3><p>India, Saudi Arabia and United States presence, combining local presence with offshore capacity.</p>
+        </div>
+        <div class="why-item">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 L14.5 9 L21 9.5 L16 14 L17.5 21 L12 17.3 L6.5 21 L8 14 L3 9.5 L9.5 9 Z"/></svg></div>
+          <span class="idx">02</span><h3>Specialized Expertise</h3><p>Experienced consultants across technology and functional domains, drawn from MNCs, GSIs and Big4 firms.</p>
+        </div>
+        <div class="why-item">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="5" width="16" height="4" rx="1"/><rect x="4" y="10" width="16" height="4" rx="1"/><rect x="4" y="15" width="16" height="4" rx="1"/></svg></div>
+          <span class="idx">03</span><h3>Flexible Engagement</h3><p>Projects, consulting, managed services and staff augmentation — structured around how you need to buy.</p>
+        </div>
+        <div class="why-item">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="12" r="4.2"/><circle cx="16" cy="12" r="4.2"/></svg></div>
+          <span class="idx">04</span><h3>End-to-End Capability</h3><p>From assessment and strategy through implementation and ongoing operations.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -616,10 +656,22 @@
         <h2 style="font-size:clamp(1.7rem,3vw,2.3rem); margin-top:.4em;">Choose the model that matches the work.</h2>
       </div>
       <div class="eng-grid" data-reveal>
-        <div class="eng-item"><h3>Consulting</h3><p>Expert advisory and assessments.</p></div>
-        <div class="eng-item"><h3>Project Delivery</h3><p>End-to-end technology implementation.</p></div>
-        <div class="eng-item"><h3>Managed Services</h3><p>Ongoing operational support.</p></div>
-        <div class="eng-item"><h3>Staff Augmentation</h3><p>Specialized professionals on demand.</p></div>
+        <div class="eng-item">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="3" y1="13" x2="21" y2="13"/></svg></div>
+          <h3>Consulting</h3><p>Expert advisory and assessments.</p>
+        </div>
+        <div class="eng-item">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="12" y1="20" x2="12" y2="4"/><polyline points="6 10 12 4 18 10"/></svg></div>
+          <h3>Project Delivery</h3><p>End-to-end technology implementation.</p>
+        </div>
+        <div class="eng-item">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M20 19v1a3 3 0 0 1-3 3h-3"/></svg></div>
+          <h3>Managed Services</h3><p>Ongoing operational support.</p>
+        </div>
+        <div class="eng-item">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3"/><path d="M4 20c0-3 2.5-5 5-5s5 2 5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M15.5 20c0-2.2 1.5-4 3-4.3"/></svg></div>
+          <h3>Staff Augmentation</h3><p>Specialized professionals on demand.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -716,7 +768,7 @@
   }, {passive:true});
 
   if (!reduce){
-    document.querySelectorAll('.flagship-card').forEach(function(card){
+    document.querySelectorAll('.flagship-card, .why-item, .eng-item, .loc-card').forEach(function(card){
       card.addEventListener('mousemove', function(e){
         var r = card.getBoundingClientRect();
         var x = e.clientX - r.left, y = e.clientY - r.top;
