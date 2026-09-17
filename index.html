@@ -195,26 +195,29 @@
   .node-line{width:100%; height:32px; opacity:.8;}
   @media (max-width:760px){ .loc-grid{grid-template-columns:1fr;} }
 
-  .index-list{border-top:1px solid var(--line-strong);}
-  .index-row{
-    display:grid; grid-template-columns:52px 1fr 46px; gap:22px; align-items:center;
-    padding:20px 16px; margin-block:4px; border-radius:10px; border-bottom:1px solid var(--line);
+  .cap-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .cap-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    padding:28px 24px; display:flex; flex-direction:column; gap:14px;
     text-decoration:none; color:inherit;
-    transition:background .2s ease, box-shadow .2s ease, transform .2s ease;
+    transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
   }
-  .index-row:hover{background:var(--surface); box-shadow:0 18px 40px -26px rgba(14,27,43,.35); transform:translateX(4px);}
-  .index-row .idx-mark{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;}
-  .index-row .code{font-family:var(--font-mono); font-size:.68rem; color:var(--slate); display:block; text-align:center; margin-top:6px; letter-spacing:.04em;}
-  .index-row .body h3{font-size:1.22rem; margin-bottom:.32em;}
-  .index-row .body p{color:var(--slate); font-size:.94rem; line-height:1.55; max-width:62ch;}
-  .index-row .arrow{display:flex; justify-content:flex-end; padding-top:.35em;}
-  .index-row .arrow svg{width:18px; height:18px; color:var(--slate); transition:transform .18s ease, color .18s ease;}
-  .index-row:hover .arrow svg{transform:translate(3px,-3px); color:var(--brand);}
-  @media (max-width:640px){
-    .index-row{grid-template-columns:44px 1fr; }
-    .index-row .arrow{display:none;}
-    .index-row .code{display:none;}
+  .cap-card:hover{
+    transform:translateY(-6px); border-color:rgba(23,69,127,.32);
+    box-shadow:0 26px 50px -26px rgba(14,27,43,.32);
   }
+  .cap-card-top{display:flex; align-items:center; justify-content:space-between;}
+  .cap-code{font-family:var(--font-mono); font-size:.7rem; color:var(--slate); letter-spacing:.06em;}
+  .cap-card h3{font-size:1.12rem; line-height:1.3;}
+  .cap-card p{color:var(--slate); font-size:.9rem; line-height:1.55; flex:1;}
+  .cap-link{
+    display:inline-flex; align-items:center; gap:.5em; font-weight:600; font-size:.86rem; color:var(--brand);
+    margin-top:auto; padding-top:12px; border-top:1px solid var(--line);
+  }
+  .cap-link svg{width:15px; height:15px; transition:transform .18s ease;}
+  .cap-card:hover .cap-link svg{transform:translateX(3px);}
+  @media (max-width:980px){ .cap-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .cap-grid{grid-template-columns:1fr;} }
 
   #staffing{background:var(--surface); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
   .staff-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start;}
@@ -281,10 +284,25 @@
   @media (max-width:860px){ .eng-grid{grid-template-columns:1fr 1fr;} }
   @media (max-width:560px){ .eng-grid{grid-template-columns:1fr;} }
 
-  #industries .wrap > .eyebrow{margin-bottom:14px;}
-  .ind-chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px;}
-  .ind-chip{border:1px dashed var(--line-strong); border-radius:20px; padding:.55em 1.1em; font-size:.86rem; color:var(--slate);}
-  .ind-note{font-family:var(--font-mono); font-size:.76rem; color:var(--slate); margin-top:16px; letter-spacing:.02em;}
+  .industries-head{display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-bottom:36px;}
+  .tbc-badge{
+    font-family:var(--font-mono); font-size:.72rem; letter-spacing:.04em; color:var(--slate);
+    border:1px dashed var(--line-strong); border-radius:20px; padding:.5em 1em; white-space:nowrap;
+  }
+  .industry-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:14px;}
+  .industry-tile{
+    background:var(--surface); border:1px dashed var(--line-strong); border-radius:12px;
+    padding:28px 16px; display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center;
+    transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  .industry-tile:hover{
+    transform:translateY(-4px); border-style:solid; border-color:rgba(23,69,127,.3);
+    box-shadow:0 20px 40px -24px rgba(14,27,43,.28);
+  }
+  .industry-tile h3{font-size:.94rem; font-weight:600; font-family:var(--font-body);}
+  .ind-note{font-family:var(--font-mono); font-size:.76rem; color:var(--slate); margin-top:20px; letter-spacing:.02em;}
+  @media (max-width:900px){ .industry-grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:520px){ .industry-grid{grid-template-columns:repeat(2,1fr);} }
 
   #cta{background:var(--brand); color:#fff;}
   #cta .wrap{display:flex; justify-content:space-between; align-items:center; gap:30px; flex-wrap:wrap;}
@@ -327,20 +345,23 @@
   .section-divider{line-height:0; margin-top:-2px; position:relative; z-index:2;}
   .section-divider svg{width:100%; height:44px; display:block;}
 
-  .flagship-card, .why-item, .eng-item, .loc-card{
+  .flagship-card, .why-item, .eng-item, .loc-card, .cap-card{
     opacity:0; transform:translateY(18px);
     transition:opacity .6s ease, transform .35s ease, border-color .3s ease, box-shadow .3s ease;
   }
   .flagship-grid.visible .flagship-card,
   .why-grid.visible .why-item,
   .eng-grid.visible .eng-item,
-  .loc-grid.visible .loc-card{ opacity:1; transform:translateY(0); }
+  .loc-grid.visible .loc-card,
+  .cap-grid.visible .cap-card{ opacity:1; transform:translateY(0); }
   .flagship-card:nth-child(1){transition-delay:.05s;} .flagship-card:nth-child(2){transition-delay:.18s;} .flagship-card:nth-child(3){transition-delay:.31s;}
   .why-item:nth-child(1){transition-delay:.03s;} .why-item:nth-child(2){transition-delay:.12s;} .why-item:nth-child(3){transition-delay:.21s;} .why-item:nth-child(4){transition-delay:.3s;}
   .eng-item:nth-child(1){transition-delay:.03s;} .eng-item:nth-child(2){transition-delay:.12s;} .eng-item:nth-child(3){transition-delay:.21s;} .eng-item:nth-child(4){transition-delay:.3s;}
   .loc-card:nth-child(1){transition-delay:.05s;} .loc-card:nth-child(2){transition-delay:.18s;} .loc-card:nth-child(3){transition-delay:.31s;}
+  .cap-card:nth-child(1){transition-delay:.02s;} .cap-card:nth-child(2){transition-delay:.08s;} .cap-card:nth-child(3){transition-delay:.14s;} .cap-card:nth-child(4){transition-delay:.2s;}
+  .cap-card:nth-child(5){transition-delay:.26s;} .cap-card:nth-child(6){transition-delay:.32s;} .cap-card:nth-child(7){transition-delay:.38s;} .cap-card:nth-child(8){transition-delay:.44s;}
   @media (prefers-reduced-motion:reduce){
-    .flagship-card, .why-item, .eng-item, .loc-card{opacity:1; transform:none; transition:none;}
+    .flagship-card, .why-item, .eng-item, .loc-card, .cap-card{opacity:1; transform:none; transition:none;}
   }
 </style>
 </head>
@@ -484,46 +505,54 @@
         <h2 style="font-size:clamp(1.7rem,3vw,2.3rem); margin-top:.4em;">Eight domains. One accountable partner.</h2>
       </div>
 
-      <div class="index-list" data-reveal>
-        <a class="index-row" href="#">
-          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 L20 6 V11 C20 16 16.5 19.5 12 21 C7.5 19.5 4 16 4 11 V6 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg></div><span class="code">CRC</span></div>
-          <div class="body"><h3>Cybersecurity, Risk &amp; Compliance</h3><p>Security audits and assessments, GRC programs, IAM &amp; PAM, and virtual CISO advisory.</p></div>
-          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
+      <div class="cap-grid" data-reveal>
+        <a class="cap-card" href="#">
+          <div class="cap-card-top"><div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 L20 6 V11 C20 16 16.5 19.5 12 21 C7.5 19.5 4 16 4 11 V6 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg></div><span class="cap-code">CRC</span></div>
+          <h3>Cybersecurity, Risk &amp; Compliance</h3>
+          <p>Security audits and assessments, GRC programs, IAM &amp; PAM, and virtual CISO advisory.</p>
+          <span class="cap-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
-        <a class="index-row" href="#">
-          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="4" width="12" height="16" rx="2"/><rect x="9" y="2" width="6" height="3" rx="1"/><polyline points="9 12 11 14 15 9"/></svg></div><span class="code">TAA</span></div>
-          <div class="body"><h3>Technology Audit &amp; Assurance</h3><p>IT audits, technology control reviews, and IT governance and risk assessments.</p></div>
-          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
+        <a class="cap-card" href="#">
+          <div class="cap-card-top"><div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="4" width="12" height="16" rx="2"/><rect x="9" y="2" width="6" height="3" rx="1"/><polyline points="9 12 11 14 15 9"/></svg></div><span class="cap-code">TAA</span></div>
+          <h3>Technology Audit &amp; Assurance</h3>
+          <p>IT audits, technology control reviews, and IT governance and risk assessments.</p>
+          <span class="cap-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
-        <a class="index-row" href="#">
-          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><span class="code">PRC</span></div>
-          <div class="body"><h3>Privacy &amp; Regulatory Compliance</h3><p>Data privacy audits, GDPR and PDPL compliance programs, and privacy risk assessments.</p></div>
-          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
+        <a class="cap-card" href="#">
+          <div class="cap-card-top"><div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><span class="cap-code">PRC</span></div>
+          <h3>Privacy &amp; Regulatory Compliance</h3>
+          <p>Data privacy audits, GDPR and PDPL compliance programs, and privacy risk assessments.</p>
+          <span class="cap-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
-        <a class="index-row" href="#">
-          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12a8 8 0 0 1 14-5.3L20 8"/><polyline points="20 4 20 8 16 8"/><path d="M20 12a8 8 0 0 1-14 5.3L4 16"/><polyline points="4 20 4 16 8 16"/></svg></div><span class="code">BCR</span></div>
-          <div class="body"><h3>Business Continuity &amp; Resilience</h3><p>BCM assessments, business impact analysis, disaster recovery, and operational resilience.</p></div>
-          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
+        <a class="cap-card" href="#">
+          <div class="cap-card-top"><div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12a8 8 0 0 1 14-5.3L20 8"/><polyline points="20 4 20 8 16 8"/><path d="M20 12a8 8 0 0 1-14 5.3L4 16"/><polyline points="4 20 4 16 8 16"/></svg></div><span class="cap-code">BCR</span></div>
+          <h3>Business Continuity &amp; Resilience</h3>
+          <p>BCM assessments, business impact analysis, disaster recovery, and operational resilience.</p>
+          <span class="cap-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
-        <a class="index-row" href="#">
-          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.1 9.1 4 4 0 0 0 7 18z"/></svg></div><span class="code">CID</span></div>
-          <div class="body"><h3>Cloud, Infrastructure &amp; DevOps</h3><p>AWS, Azure, Google Cloud and OCI services, infrastructure modernization, and platform engineering.</p></div>
-          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
+        <a class="cap-card" href="#">
+          <div class="cap-card-top"><div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.1 9.1 4 4 0 0 0 7 18z"/></svg></div><span class="cap-code">CID</span></div>
+          <h3>Cloud, Infrastructure &amp; DevOps</h3>
+          <p>AWS, Azure, Google Cloud and OCI services, infrastructure modernization, and platform engineering.</p>
+          <span class="cap-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
-        <a class="index-row" href="#">
-          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M20 19v1a3 3 0 0 1-3 3h-3"/></svg></div><span class="code">MSV</span></div>
-          <div class="body"><h3>Managed Services</h3><p>Application and infrastructure managed services, NOC and SOC as a service, and service desk support.</p></div>
-          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
+        <a class="cap-card" href="#">
+          <div class="cap-card-top"><div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M20 19v1a3 3 0 0 1-3 3h-3"/></svg></div><span class="cap-code">MSV</span></div>
+          <h3>Managed Services</h3>
+          <p>Application and infrastructure managed services, NOC and SOC as a service, and service desk support.</p>
+          <span class="cap-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
-        <a class="index-row" href="#">
-          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="12" width="3.4" height="8"/><rect x="10.3" y="7" width="3.4" height="13"/><rect x="16.6" y="3" width="3.4" height="17"/></svg></div><span class="code">DTA</span></div>
-          <div class="body"><h3>Digital Transformation &amp; Analytics</h3><p>AI, machine learning, data analytics, Power BI and business intelligence, and process automation.</p></div>
-          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
+        <a class="cap-card" href="#">
+          <div class="cap-card-top"><div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="12" width="3.4" height="8"/><rect x="10.3" y="7" width="3.4" height="13"/><rect x="16.6" y="3" width="3.4" height="17"/></svg></div><span class="cap-code">DTA</span></div>
+          <h3>Digital Transformation &amp; Analytics</h3>
+          <p>AI, machine learning, data analytics, Power BI and business intelligence, and process automation.</p>
+          <span class="cap-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
-        <a class="index-row" href="#">
-          <div class="idx-mark"><div class="icon-badge sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="3" y1="13" x2="21" y2="13"/></svg></div><span class="code">PCS</span></div>
-          <div class="body"><h3>Professional Consulting</h3><p>Program and project management, PMO services, service delivery management, and technology advisory.</p></div>
-          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="6" y1="18" x2="18" y2="6"/><polyline points="9 6 18 6 18 15"/></svg></span>
+        <a class="cap-card" href="#">
+          <div class="cap-card-top"><div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="3" y1="13" x2="21" y2="13"/></svg></div><span class="cap-code">PCS</span></div>
+          <h3>Professional Consulting</h3>
+          <p>Program and project management, PMO services, service delivery management, and technology advisory.</p>
+          <span class="cap-link">Learn more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
       </div>
     </div>
@@ -650,15 +679,38 @@
 
   <section id="industries">
     <div class="wrap">
-      <span class="eyebrow">Industries</span>
-      <h2 style="font-size:clamp(1.5rem,2.6vw,2rem); margin-top:.5em; max-width:40ch;">Sectors we're positioning around</h2>
-      <div class="ind-chips" data-reveal>
-        <span class="ind-chip">Financial Services</span>
-        <span class="ind-chip">Government</span>
-        <span class="ind-chip">Healthcare</span>
-        <span class="ind-chip">Technology</span>
-        <span class="ind-chip">Energy</span>
-        <span class="ind-chip">Enterprise</span>
+      <div class="industries-head">
+        <div>
+          <span class="eyebrow">Industries</span>
+          <h2 style="font-size:clamp(1.7rem,3vw,2.3rem); margin-top:.4em; max-width:40ch;">Sectors we're positioning around</h2>
+        </div>
+        <span class="tbc-badge">Pending client confirmation</span>
+      </div>
+      <div class="industry-grid" data-reveal>
+        <div class="industry-tile">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9 L12 4 L21 9"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="5" y1="9" x2="5" y2="18"/><line x1="9" y1="9" x2="9" y2="18"/><line x1="15" y1="9" x2="15" y2="18"/><line x1="19" y1="9" x2="19" y2="18"/><line x1="3" y1="20" x2="21" y2="20"/></svg></div>
+          <h3>Financial Services</h3>
+        </div>
+        <div class="industry-tile">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 21V4l10 4-10 4"/></svg></div>
+          <h3>Government</h3>
+        </div>
+        <div class="industry-tile">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+          <h3>Healthcare</h3>
+        </div>
+        <div class="industry-tile">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="7" width="10" height="10" rx="1"/><line x1="12" y1="2" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="22"/><line x1="2" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="22" y2="12"/></svg></div>
+          <h3>Technology</h3>
+        </div>
+        <div class="industry-tile">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="13 2 4 14 11 14 10 22 20 9 13 9 13 2"/></svg></div>
+          <h3>Energy</h3>
+        </div>
+        <div class="industry-tile">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="3" width="14" height="18" rx="1"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="14" x2="19" y2="14"/><line x1="10" y1="3" x2="10" y2="21"/></svg></div>
+          <h3>Enterprise</h3>
+        </div>
       </div>
       <p class="ind-note">Draft placeholder — industry focus to be confirmed with NAZZTEC before this section goes live.</p>
     </div>
@@ -763,7 +815,7 @@
   }
 
   if (!reduce){
-    document.querySelectorAll('.flagship-card, .why-item, .eng-item, .loc-card').forEach(function(card){
+    document.querySelectorAll('.flagship-card, .why-item, .eng-item, .loc-card, .cap-card').forEach(function(card){
       card.addEventListener('mousemove', function(e){
         var r = card.getBoundingClientRect();
         var x = e.clientX - r.left, y = e.clientY - r.top;
