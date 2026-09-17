@@ -6,7 +6,7 @@ NAZZTEC is a technology consulting company (cybersecurity, cloud, managed servic
 
 ## Live preview
 
-[`index.html`](./index.html) — deployed at https://nazztec-uat-annus-projects-6a070b23.vercel.app/
+[`index.html`](./index.html) — live at https://annu-rai.github.io/nazztec-website-uat/
 
 ## Contents
 
@@ -18,7 +18,7 @@ NAZZTEC is a technology consulting company (cybersecurity, cloud, managed servic
 
 - **Type** — Fraunces (display), Public Sans (body), IBM Plex Mono (data/reference codes)
 - **Color** — brand blue `#17457F`, ink `#0E1B2B`, signal accent `#0FAFC4`, slate `#5C6B78`
-- **Layout** — a capability "index" (audit-ledger style) instead of a generic icon-card grid; hairline borders and sharp corners instead of soft shadows and rounded cards
+- **Layout** — full-bleed photography-led hero (Slalom/PwC/Kyndryl-inspired), elevated icon-badge card grids for Services/Why/Engagement/Presence/Industries, and a sticky scroll-spy sub-navigation
 
 ## Status
 
