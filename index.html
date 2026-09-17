@@ -56,8 +56,8 @@
     text-decoration:none; border:1px solid transparent; transition:transform .18s ease, background .18s ease, border-color .18s ease;
   }
   .btn:focus-visible{outline:2px solid var(--signal); outline-offset:2px;}
-  .btn-primary{background:var(--brand); color:#fff;}
-  .btn-primary:hover{background:var(--brand-deep);}
+  .btn-primary{background:var(--brand); color:#fff; box-shadow:0 14px 30px -12px rgba(23,69,127,.55);}
+  .btn-primary:hover{background:var(--brand-deep); box-shadow:0 18px 36px -12px rgba(23,69,127,.65); transform:translateY(-1px);}
   .btn-ghost{border-color:var(--line-strong); color:var(--ink);}
   .btn-ghost:hover{border-color:var(--brand); color:var(--brand);}
   .btn-ghost.on-dark{border-color:rgba(255,255,255,.35); color:#fff;}
@@ -94,8 +94,15 @@
     .btn-primary.nav-cta{display:none;}
   }
 
-  #hero .wrap{display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:end; padding-top:clamp(40px,6vw,72px);}
-  .hero-head h1{font-size:clamp(2.3rem,4.6vw,3.6rem); line-height:1.06; margin-block:.5em .38em;}
+  #hero{position:relative; overflow:hidden;}
+  #hero::before{
+    content:""; position:absolute; top:-30%; right:-12%; width:64%; height:140%;
+    background:radial-gradient(circle, rgba(23,69,127,.14) 0%, rgba(15,175,196,.08) 45%, transparent 72%);
+    pointer-events:none; z-index:0;
+  }
+  #hero .wrap{position:relative; z-index:1; display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:end; padding-top:clamp(40px,6vw,72px);}
+  .hero-head h1{font-size:clamp(2.6rem,5.6vw,4.6rem); line-height:1.04; margin-block:.5em .38em;}
+  .grad-text{background:linear-gradient(100deg, var(--brand) 10%, var(--signal) 85%); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .hero-head p.lede{font-size:1.08rem; line-height:1.6; color:var(--slate); max-width:44ch;}
   .hero-cta-row{display:flex; flex-wrap:wrap; gap:14px; margin-top:2em;}
   .hero-flags{margin-top:2.2em; font-family:var(--font-mono); font-size:.78rem; letter-spacing:.06em; color:var(--slate); display:flex; gap:.6em; align-items:center;}
@@ -103,19 +110,53 @@
   .rotator{color:var(--brand); display:inline-block; transition:opacity .35s ease, transform .35s ease;}
   .rotator.swap{opacity:0; transform:translateY(4px);}
 
-  #flagship{background:var(--ink); color:var(--paper);}
-  .flagship-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.14);}
-  .flagship-card{background:#0E1B2B; padding:36px 30px; display:flex; flex-direction:column; gap:14px; transition:background .25s ease, transform .25s ease;}
-  .flagship-card:hover{background:#132840; transform:translateY(-4px);}
-  .flagship-card svg{width:34px; height:34px; color:var(--signal);}
-  .flagship-card h3{color:#fff; font-size:1.3rem;}
-  .flagship-card p{color:rgba(243,245,247,.72); font-size:.92rem; line-height:1.6;}
-  .flagship-tag{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; color:var(--signal); margin-top:auto; padding-top:12px; border-top:1px solid rgba(255,255,255,.14);}
+  #flagship{
+    background:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,.09) 1.4px, transparent 0) 0 0/28px 28px,
+      var(--ink);
+    color:var(--paper); position:relative;
+  }
+  .flagship-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .flagship-card{
+    background:linear-gradient(165deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+    border:1px solid rgba(255,255,255,.12); border-radius:10px;
+    padding:34px 28px; display:flex; flex-direction:column; gap:16px;
+    transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .flagship-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(15,175,196,.45);
+    box-shadow:0 24px 50px -20px rgba(15,175,196,.35);
+  }
+  .flagship-icon-badge{
+    width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, rgba(23,69,127,.9), rgba(15,175,196,.55));
+  }
+  .flagship-card svg{width:26px; height:26px; color:#fff;}
+  .flagship-card h3{color:#fff; font-size:1.4rem;}
+  .flagship-card p{color:rgba(243,245,247,.72); font-size:.94rem; line-height:1.6;}
+  .flagship-tag{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; color:var(--signal); margin-top:auto; padding-top:14px; border-top:1px solid rgba(255,255,255,.14);}
   @media (max-width:860px){ .flagship-grid{grid-template-columns:1fr;} }
 
+  .marquee-track{
+    margin-top:40px; padding-top:28px; border-top:1px solid rgba(255,255,255,.12);
+    overflow:hidden; white-space:nowrap; position:relative;
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-content{
+    display:inline-flex; align-items:center; gap:14px;
+    font-family:var(--font-mono); font-size:.86rem; letter-spacing:.04em; color:rgba(243,245,247,.68);
+    animation:marquee 32s linear infinite;
+  }
+  .marquee-content .dot-sep{color:var(--signal);}
+  @keyframes marquee{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  @media (prefers-reduced-motion:reduce){ .marquee-content{animation:none;} }
+
   .ledger-card{
-    background:var(--ink); color:var(--paper); border-radius:var(--radius);
-    padding:26px 26px 22px; position:relative; overflow:hidden;
+    background:var(--ink); color:var(--paper); border-radius:8px;
+    padding:28px 28px 24px; position:relative; overflow:hidden;
+    box-shadow:0 30px 70px -25px rgba(15,175,196,.45), 0 12px 30px -14px rgba(14,27,43,.5);
   }
   .ledger-card canvas{position:absolute; inset:0; width:100%; height:100%; opacity:.55;}
   .ledger-card .ledger-inner{position:relative; z-index:1;}
@@ -133,8 +174,11 @@
   .presence-head h2{font-size:clamp(1.7rem,3vw,2.3rem);}
   .stat-strip{display:flex; gap:40px; flex-wrap:wrap;}
   .stat{font-family:var(--font-mono);}
-  .stat .num{font-size:1.8rem; color:var(--brand); font-variant-numeric:tabular-nums; display:block;}
-  .stat .label{font-size:.74rem; color:var(--slate); letter-spacing:.05em; text-transform:uppercase;}
+  .stat .num{
+    font-size:2.8rem; font-weight:500; font-variant-numeric:tabular-nums; display:block; line-height:1;
+    background:linear-gradient(100deg, var(--brand) 15%, var(--signal) 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .stat .label{font-size:.76rem; color:var(--slate); letter-spacing:.05em; text-transform:uppercase; margin-top:6px; display:block;}
 
   .loc-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
   .loc-card{background:var(--surface); padding:28px 26px; display:flex; flex-direction:column; gap:14px;}
@@ -286,7 +330,7 @@
     <div class="wrap">
       <div class="hero-head" data-reveal>
         <span class="eyebrow">Trusted for <span class="rotator" id="heroRotator">Cybersecurity</span></span>
-        <h1>Technology.<br>Talent.<br>Transformation.</h1>
+        <h1>Technology.<br>Talent.<br><span class="grad-text">Transformation.</span></h1>
         <p class="lede">NAZZTEC helps organizations accelerate transformation through cybersecurity, cloud, managed services, digital solutions, and specialized technology talent.</p>
         <div class="hero-cta-row">
           <a href="#services" class="btn btn-primary">Explore Our Services
@@ -321,23 +365,46 @@
       </div>
       <div class="flagship-grid" data-reveal>
         <div class="flagship-card">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 L20 6 V11 C20 16 16.5 19.5 12 21 C7.5 19.5 4 16 4 11 V6 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg>
+          <div class="flagship-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3 L20 6 V11 C20 16 16.5 19.5 12 21 C7.5 19.5 4 16 4 11 V6 Z"/><path d="M8.5 12 L11 14.5 L15.5 9.5"/></svg></div>
           <h3>Cybersecurity</h3>
           <p>GRC, IAM/PAM, and virtual CISO advisory — audit-grade security that satisfies regulators and boards, not just checklists.</p>
           <span class="flagship-tag">Ref. CRC · TAA</span>
         </div>
         <div class="flagship-card">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9 L12 4 L21 9"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="5" y1="9" x2="5" y2="18"/><line x1="9" y1="9" x2="9" y2="18"/><line x1="15" y1="9" x2="15" y2="18"/><line x1="19" y1="9" x2="19" y2="18"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+          <div class="flagship-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9 L12 4 L21 9"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="5" y1="9" x2="5" y2="18"/><line x1="9" y1="9" x2="9" y2="18"/><line x1="15" y1="9" x2="15" y2="18"/><line x1="19" y1="9" x2="19" y2="18"/><line x1="3" y1="20" x2="21" y2="20"/></svg></div>
           <h3>Banking &amp; Financial Services</h3>
           <p>Compliance-first delivery across ISO 27001, SOC 2, PCI DSS, GDPR and PDPL — the frameworks regulated institutions require.</p>
           <span class="flagship-tag">Ref. PRC · Frameworks</span>
         </div>
         <div class="flagship-card">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.1 9.1 4 4 0 0 0 7 18z"/></svg>
+          <div class="flagship-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.1 9.1 4 4 0 0 0 7 18z"/></svg></div>
           <h3>IT &amp; Cloud Services</h3>
           <p>Cloud migration, DevOps, and managed NOC/SOC — 24/7 operational support across AWS, Azure, GCP and OCI.</p>
           <span class="flagship-tag">Ref. CID · MSV</span>
         </div>
+      </div>
+    </div>
+
+    <div class="marquee-track" aria-hidden="true">
+      <div class="marquee-content">
+        <span>Cybersecurity Audit</span><span class="dot-sep">•</span>
+        <span>Cloud &amp; DevOps</span><span class="dot-sep">•</span>
+        <span>ISO/IEC 27001</span><span class="dot-sep">•</span>
+        <span>SOC 2</span><span class="dot-sep">•</span>
+        <span>PCI DSS</span><span class="dot-sep">•</span>
+        <span>GDPR &amp; PDPL</span><span class="dot-sep">•</span>
+        <span>Managed NOC / SOC</span><span class="dot-sep">•</span>
+        <span>Staff Augmentation</span><span class="dot-sep">•</span>
+        <span>AI &amp; Data Analytics</span><span class="dot-sep">•</span>
+        <span>Cybersecurity Audit</span><span class="dot-sep">•</span>
+        <span>Cloud &amp; DevOps</span><span class="dot-sep">•</span>
+        <span>ISO/IEC 27001</span><span class="dot-sep">•</span>
+        <span>SOC 2</span><span class="dot-sep">•</span>
+        <span>PCI DSS</span><span class="dot-sep">•</span>
+        <span>GDPR &amp; PDPL</span><span class="dot-sep">•</span>
+        <span>Managed NOC / SOC</span><span class="dot-sep">•</span>
+        <span>Staff Augmentation</span><span class="dot-sep">•</span>
+        <span>AI &amp; Data Analytics</span><span class="dot-sep">•</span>
       </div>
     </div>
   </section>
