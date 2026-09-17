@@ -79,29 +79,16 @@
   }
   header.site.scrolled{border-color:var(--line); box-shadow:0 1px 0 rgba(14,27,43,.02), 0 8px 24px -20px rgba(14,27,43,.4);}
 
-  .subnav{
-    position:sticky; top:70px; z-index:40;
-    background:rgba(243,245,247,.94); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
+  .subnav{position:sticky; top:70px; z-index:40; pointer-events:none;}
   .subnav-inner{
-    max-width:var(--maxw); margin:0 auto; position:relative;
-    display:flex; gap:clamp(18px,3vw,34px); padding-inline:20px;
-    overflow-x:auto; scrollbar-width:none;
+    pointer-events:auto; max-width:var(--maxw); margin:0 auto;
+    display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:9px;
+    padding:10px 20px; font-family:var(--font-mono); font-size:.74rem; letter-spacing:.05em; text-transform:uppercase;
   }
-  .subnav-inner::-webkit-scrollbar{display:none;}
-  .subnav-link{
-    font-family:var(--font-mono); font-size:.78rem; letter-spacing:.04em; text-transform:uppercase;
-    padding:16px 2px; text-decoration:none; color:var(--slate); white-space:nowrap;
-    transition:color .2s ease;
-  }
+  .subnav-link{color:var(--slate); text-decoration:none; white-space:nowrap; transition:color .2s ease; text-shadow:0 1px 3px rgba(243,245,247,.9);}
   .subnav-link:hover{color:var(--ink);}
-  .subnav-link.active{color:var(--ink); font-weight:600;}
-  .subnav-indicator{
-    position:absolute; bottom:0; height:2px; background:var(--brand); border-radius:2px 2px 0 0;
-    transition:left .32s cubic-bezier(.4,0,.2,1), width .32s cubic-bezier(.4,0,.2,1); left:0; width:0;
-  }
-  @media (prefers-reduced-motion:reduce){ .subnav-indicator{transition:none;} }
+  .subnav-link.active{color:var(--brand); font-weight:600;}
+  .subnav-dot{color:var(--line-strong); font-size:.7rem;}
   .nav-row{display:flex; align-items:center; justify-content:space-between; gap:24px; padding-block:16px;}
   .wordmark{font-family:var(--font-display); font-weight:600; font-size:1.28rem; letter-spacing:.01em; display:flex; align-items:baseline; gap:.4em; text-decoration:none; color:var(--ink);}
   .wordmark span{font-family:var(--font-mono); font-size:.6rem; font-weight:400; color:var(--slate); letter-spacing:.1em; text-transform:uppercase;}
@@ -416,12 +403,16 @@
 <nav class="subnav" id="subnav" aria-label="Section navigation">
   <div class="subnav-inner" id="subnavInner">
     <a href="#hero" class="subnav-link active" data-target="hero">Overview</a>
+    <span class="subnav-dot" aria-hidden="true">&middot;</span>
     <a href="#services" class="subnav-link" data-target="services">Services</a>
+    <span class="subnav-dot" aria-hidden="true">&middot;</span>
     <a href="#staffing" class="subnav-link" data-target="staffing">Staffing</a>
+    <span class="subnav-dot" aria-hidden="true">&middot;</span>
     <a href="#presence" class="subnav-link" data-target="presence">Presence</a>
+    <span class="subnav-dot" aria-hidden="true">&middot;</span>
     <a href="#digital" class="subnav-link" data-target="digital">Digital</a>
+    <span class="subnav-dot" aria-hidden="true">&middot;</span>
     <a href="#cta" class="subnav-link" data-target="cta">Contact</a>
-    <span class="subnav-indicator" id="subnavIndicator" aria-hidden="true"></span>
   </div>
 </nav>
 
@@ -818,30 +809,13 @@
   window.addEventListener('resize', positionSubnav);
 
   if (subnav){
-    var subnavInner = document.getElementById('subnavInner');
-    var subnavIndicator = document.getElementById('subnavIndicator');
     var subnavLinks = Array.prototype.slice.call(subnav.querySelectorAll('.subnav-link'));
     var spySections = subnavLinks.map(function(l){ return document.getElementById(l.getAttribute('data-target')); });
 
-    function moveIndicator(link){
-      if (!link || !subnavIndicator || !subnavInner) return;
-      var containerRect = subnavInner.getBoundingClientRect();
-      var linkRect = link.getBoundingClientRect();
-      subnavIndicator.style.left = (linkRect.left - containerRect.left + subnavInner.scrollLeft) + 'px';
-      subnavIndicator.style.width = linkRect.width + 'px';
-    }
     function setActive(idx){
       subnavLinks.forEach(function(l){ l.classList.remove('active'); });
-      if (idx > -1){
-        subnavLinks[idx].classList.add('active');
-        moveIndicator(subnavLinks[idx]);
-      }
+      if (idx > -1) subnavLinks[idx].classList.add('active');
     }
-    setActive(0);
-    window.addEventListener('resize', function(){
-      var current = subnav.querySelector('.subnav-link.active');
-      moveIndicator(current);
-    });
 
     if ('IntersectionObserver' in window){
       var spy = new IntersectionObserver(function(entries){
