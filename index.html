@@ -81,16 +81,28 @@
   }
   header.site.scrolled{border-color:var(--line); box-shadow:0 1px 0 rgba(14,27,43,.02), 0 8px 24px -20px rgba(14,27,43,.4);}
 
-  .subnav{position:sticky; top:70px; z-index:40; pointer-events:none;}
-  .subnav-inner{
-    pointer-events:auto; max-width:var(--maxw); margin:0 auto;
-    display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:9px;
-    padding:10px 20px; font-family:var(--font-mono); font-size:.74rem; letter-spacing:.05em; text-transform:uppercase;
+  .side-rail{
+    position:fixed; right:26px; top:50%; transform:translateY(-50%); z-index:45;
+    display:flex; flex-direction:column; align-items:center; gap:15px;
+    background:rgba(243,245,247,.55); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    padding:18px 9px; border-radius:20px; box-shadow:0 14px 34px -20px rgba(14,27,43,.35);
+    border:1px solid rgba(255,255,255,.5);
   }
-  .subnav-link{color:var(--slate); text-decoration:none; white-space:nowrap; transition:color .2s ease; text-shadow:0 1px 3px rgba(243,245,247,.9);}
-  .subnav-link:hover{color:var(--ink);}
-  .subnav-link.active{color:var(--brand); font-weight:600;}
-  .subnav-dot{color:var(--line-strong); font-size:.7rem;}
+  .rail-dot{
+    width:8px; height:8px; border-radius:50%; background:rgba(14,27,43,.28);
+    transition:background .25s ease, transform .25s ease; position:relative; display:block; flex:none;
+  }
+  .rail-dot:hover{background:rgba(14,27,43,.55);}
+  .rail-dot.active{background:var(--brand); transform:scale(1.4);}
+  .rail-label{
+    position:absolute; right:100%; top:50%; margin-right:14px; transform:translateY(-50%) translateX(6px);
+    font-family:var(--font-mono); font-size:.7rem; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--ink); background:var(--surface); padding:5px 11px; border-radius:5px;
+    white-space:nowrap; opacity:0; pointer-events:none; box-shadow:0 10px 24px -12px rgba(14,27,43,.35);
+    transition:opacity .18s ease, transform .18s ease;
+  }
+  .rail-dot:hover .rail-label, .rail-dot.active .rail-label{opacity:1; transform:translateY(-50%) translateX(0);}
+  @media (max-width:1100px){ .side-rail{display:none;} }
   .nav-row{display:flex; align-items:center; justify-content:space-between; gap:24px; padding-block:16px;}
   .wordmark{font-family:var(--font-display); font-weight:600; font-size:1.28rem; letter-spacing:.01em; display:flex; align-items:baseline; gap:.4em; text-decoration:none; color:var(--ink);}
   .wordmark span{font-family:var(--font-mono); font-size:.6rem; font-weight:400; color:var(--slate); letter-spacing:.1em; text-transform:uppercase;}
@@ -136,8 +148,15 @@
   .grad-text{background:linear-gradient(100deg, var(--signal) 10%, #fff 85%); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .hero-head p.lede{font-size:1.16rem; line-height:1.6; color:rgba(243,245,247,.86); max-width:52ch;}
   .hero-cta-row{display:flex; flex-wrap:wrap; gap:14px; margin-top:2.2em;}
-  .hero-flags{margin-top:2.4em; font-family:var(--font-mono); font-size:.78rem; letter-spacing:.06em; color:rgba(243,245,247,.6); display:flex; gap:.6em; align-items:center;}
-  .hero-flags b{color:#fff; font-weight:500;}
+  .hero-flags{margin-top:2.4em; display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+  .hero-flags-label{font-family:var(--font-mono); font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:rgba(243,245,247,.68); margin-right:4px;}
+  .hero-flag-chip{
+    font-family:var(--font-mono); font-size:.82rem; letter-spacing:.02em; font-weight:600; color:#fff;
+    background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.32);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    padding:.45em .95em; border-radius:20px; transition:background .2s ease, border-color .2s ease;
+  }
+  .hero-flag-chip:hover{background:rgba(255,255,255,.22); border-color:var(--signal);}
   .rotator{color:var(--signal); display:inline-block; transition:opacity .35s ease, transform .35s ease;}
   .rotator.swap{opacity:0; transform:translateY(4px);}
   #hero .btn-ghost{border-color:rgba(255,255,255,.4); color:#fff;}
@@ -469,20 +488,13 @@
   </div>
 </header>
 
-<nav class="subnav" id="subnav" aria-label="Section navigation">
-  <div class="subnav-inner" id="subnavInner">
-    <a href="#hero" class="subnav-link active" data-target="hero">Overview</a>
-    <span class="subnav-dot" aria-hidden="true">&middot;</span>
-    <a href="#services" class="subnav-link" data-target="services">Services</a>
-    <span class="subnav-dot" aria-hidden="true">&middot;</span>
-    <a href="#staffing" class="subnav-link" data-target="staffing">Staffing</a>
-    <span class="subnav-dot" aria-hidden="true">&middot;</span>
-    <a href="#presence" class="subnav-link" data-target="presence">Presence</a>
-    <span class="subnav-dot" aria-hidden="true">&middot;</span>
-    <a href="#digital" class="subnav-link" data-target="digital">Digital</a>
-    <span class="subnav-dot" aria-hidden="true">&middot;</span>
-    <a href="#cta" class="subnav-link" data-target="cta">Contact</a>
-  </div>
+<nav class="side-rail" id="sideRail" aria-label="Section navigation">
+  <a href="#hero" class="rail-dot active" data-target="hero"><span class="rail-label">Overview</span></a>
+  <a href="#services" class="rail-dot" data-target="services"><span class="rail-label">Services</span></a>
+  <a href="#staffing" class="rail-dot" data-target="staffing"><span class="rail-label">Staffing</span></a>
+  <a href="#presence" class="rail-dot" data-target="presence"><span class="rail-label">Presence</span></a>
+  <a href="#digital" class="rail-dot" data-target="digital"><span class="rail-label">Digital</span></a>
+  <a href="#cta" class="rail-dot" data-target="cta"><span class="rail-label">Contact</span></a>
 </nav>
 
 <main>
@@ -499,7 +511,12 @@
           </a>
           <a href="#cta" class="btn btn-ghost">Talk to Our Experts</a>
         </div>
-        <p class="hero-flags"><b>Delivering from</b> India &nbsp;&middot;&nbsp; Saudi Arabia &nbsp;&middot;&nbsp; United States</p>
+        <div class="hero-flags">
+          <span class="hero-flags-label">Delivering from</span>
+          <span class="hero-flag-chip">India</span>
+          <span class="hero-flag-chip">Saudi Arabia</span>
+          <span class="hero-flag-chip">United States</span>
+        </div>
       </div>
     </div>
   </section>
@@ -879,20 +896,14 @@
     }
   }, {passive:true});
 
-  var subnav = document.getElementById('subnav');
-  function positionSubnav(){
-    if (subnav) subnav.style.top = header.offsetHeight + 'px';
-  }
-  positionSubnav();
-  window.addEventListener('resize', positionSubnav);
-
-  if (subnav){
-    var subnavLinks = Array.prototype.slice.call(subnav.querySelectorAll('.subnav-link'));
-    var spySections = subnavLinks.map(function(l){ return document.getElementById(l.getAttribute('data-target')); });
+  var sideRail = document.getElementById('sideRail');
+  if (sideRail){
+    var railDots = Array.prototype.slice.call(sideRail.querySelectorAll('.rail-dot'));
+    var spySections = railDots.map(function(l){ return document.getElementById(l.getAttribute('data-target')); });
 
     function setActive(idx){
-      subnavLinks.forEach(function(l){ l.classList.remove('active'); });
-      if (idx > -1) subnavLinks[idx].classList.add('active');
+      railDots.forEach(function(l){ l.classList.remove('active'); });
+      if (idx > -1) railDots[idx].classList.add('active');
     }
 
     if ('IntersectionObserver' in window){
