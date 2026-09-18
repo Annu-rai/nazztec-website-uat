@@ -19,7 +19,8 @@ Each demo is a fully independent page/URL. A small banner at the top of each lin
 
 - **`index.html`** / **`demo2.html`** / **`demo3.html`** — the three homepage concepts described above, using identical NAZZTEC content (services, locations, staffing, frameworks, etc.) with three different visual systems, for a fair side-by-side comparison.
 - **`docs/project-brief.html`** — a one-page project brief covering scope, design rationale, and next steps.
-- **`docs/webflow-spec.html`** — the implementation spec for rebuilding Demo 1 in Webflow: Client-First class naming for every component, CMS collection schemas (Services, Locations, Insights), interaction mapping, and build order. (Written against Demo 1 — update once the client picks a direction.)
+- **`docs/webflow-spec.html`** — implementation spec for rebuilding a chosen demo in Webflow: Client-First class naming, CMS collection schemas (Services, Locations, Insights), interaction mapping, and build order.
+- **`docs/wordpress-spec.html`** — implementation spec for the alternative build path: a custom-coded WordPress theme (ACF Pro for Services/Locations/Insights, native custom post types, plugin stack, template-to-section mapping, and build order). Both specs apply to whichever demo the client picks — only the extracted CSS/JS file changes.
 
 ## Design systems
 

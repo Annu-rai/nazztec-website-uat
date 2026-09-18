@@ -1,0 +1,346 @@
+<title>NAZZTEC WordPress Spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1B2B; --paper:#F7F8F9; --surface:#FFFFFF;
+    --brand:#17457F; --brand-deep:#0C2E52; --signal:#0FAFC4; --slate:#5C6B78;
+    --line:rgba(14,27,43,.12); --line-strong:rgba(14,27,43,.24);
+    --font-display:'Fraunces',Georgia,serif;
+    --font-body:'Public Sans',-apple-system,'Segoe UI',sans-serif;
+    --font-mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body);
+    font-size:15.5px; line-height:1.6;
+    padding-left:max(20px, env(safe-area-inset-left,0px));
+    padding-right:max(20px, env(safe-area-inset-right,0px));
+  }
+  [hidden]{display:none!important;}
+  img{max-width:100%;}
+  a{color:var(--brand);}
+  h1,h2,h3,h4{font-family:var(--font-display); font-weight:600; text-wrap:balance; margin:0;}
+  p{margin:0;}
+  code, .code{font-family:var(--font-mono); font-size:.85em;}
+
+  .layout{display:grid; grid-template-columns:240px 1fr; gap:0; max-width:1180px; margin:0 auto;}
+  .toc{
+    position:sticky; top:calc(env(safe-area-inset-top,0px) + 24px); align-self:start;
+    padding:40px 20px 40px 0; display:flex; flex-direction:column; gap:2px; max-height:calc(100vh - 48px); overflow:auto;
+  }
+  .toc a{
+    font-size:.86rem; color:var(--slate); text-decoration:none; padding:7px 10px; border-radius:3px; border-left:2px solid transparent;
+  }
+  .toc a:hover{color:var(--brand); background:rgba(23,69,127,.05);}
+  .toc a.active{color:var(--brand); border-left-color:var(--brand); font-weight:600; background:rgba(23,69,127,.06);}
+
+  main{padding:40px 0 100px 32px; border-left:1px solid var(--line); min-width:0;}
+  .doc-head{padding-bottom:36px; margin-bottom:36px; border-bottom:1px solid var(--line);}
+  .doc-head .eyebrow{font-family:var(--font-mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--brand);}
+  .doc-head h1{font-size:clamp(1.7rem,3vw,2.3rem); margin-top:.5em;}
+  .doc-head p{color:var(--slate); margin-top:.8em; max-width:64ch; font-size:1rem;}
+
+  section.doc-section{padding-bottom:52px; margin-bottom:52px; border-bottom:1px solid var(--line);}
+  section.doc-section:last-child{border-bottom:none;}
+  section.doc-section h2{font-size:1.5rem; margin-bottom:.3em;}
+  section.doc-section .lede{color:var(--slate); max-width:70ch; margin-bottom:24px;}
+  h3.sub{font-family:var(--font-body); font-weight:700; font-size:1rem; margin:28px 0 12px;}
+  h3.sub .tag{font-family:var(--font-mono); font-weight:400; font-size:.78rem; color:var(--slate); margin-left:8px;}
+
+  table{width:100%; border-collapse:collapse; font-size:.88rem; margin-bottom:8px;}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-family:var(--font-mono); font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--slate); font-weight:500;}
+  tr:last-child td{border-bottom:1px solid var(--line-strong);}
+  .table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:4px;}
+  .table-wrap table{margin-bottom:0;}
+  .table-wrap th, .table-wrap td{border-bottom:1px solid var(--line);}
+  .table-wrap tr:last-child td{border-bottom:none;}
+
+  .tree{
+    background:var(--surface); border:1px solid var(--line); border-radius:4px;
+    padding:16px 18px; overflow-x:auto; font-family:var(--font-mono); font-size:.82rem; line-height:1.85;
+    white-space:pre;
+  }
+  .tree .cls{color:var(--brand);}
+  .tree .el{color:var(--slate);}
+  .tree .cms{color:var(--signal); background:rgba(15,175,196,.1); border-radius:2px; padding:0 3px;}
+
+  .codeblock{
+    background:var(--ink); color:#e8edf1; border-radius:6px; padding:18px 20px; overflow-x:auto;
+    font-family:var(--font-mono); font-size:.8rem; line-height:1.7; white-space:pre;
+  }
+  .codeblock .cmt{color:#7f97ac;}
+  .codeblock .str{color:#8fd6ff;}
+  .codeblock .fn{color:#7fe0c8;}
+
+  .note{
+    background:rgba(15,175,196,.07); border:1px solid rgba(15,175,196,.3); border-radius:4px;
+    padding:12px 16px; font-size:.88rem; color:var(--ink); margin-top:16px;
+  }
+  .note b{color:var(--brand-deep);}
+  .warn{
+    background:rgba(196,90,15,.07); border:1px solid rgba(196,90,15,.3); border-radius:4px;
+    padding:12px 16px; font-size:.88rem; color:var(--ink); margin-top:16px;
+  }
+  .warn b{color:#a3480c;}
+
+  ol.steps{margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:10px;}
+  ol.steps li{padding-left:.3em;}
+  ol.steps b{font-family:var(--font-mono); font-size:.85em; color:var(--brand);}
+
+  .pill{display:inline-block; font-family:var(--font-mono); font-size:.68rem; letter-spacing:.05em; text-transform:uppercase; background:var(--ink); color:#fff; padding:2px 8px; border-radius:10px; margin-left:8px;}
+
+  .nav-toggle-doc{display:none;}
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .toc{position:static; max-height:none; padding:0; border-bottom:1px solid var(--line); margin-bottom:8px;}
+    main{padding-left:0; border-left:none;}
+    .toc{display:none;}
+    .toc.open{display:flex;}
+    .nav-toggle-doc{
+      display:flex; align-items:center; justify-content:space-between; width:100%;
+      background:none; border:1px solid var(--line-strong); border-radius:4px; padding:10px 14px;
+      font-family:var(--font-mono); font-size:.8rem; color:var(--ink); cursor:pointer; margin:20px 0 0;
+    }
+  }
+</style>
+
+<div class="layout">
+  <aside class="toc" id="toc">
+    <a href="#overview">Overview</a>
+    <a href="#stack">Stack &amp; Plugins</a>
+    <a href="#structure">Theme File Structure</a>
+    <a href="#cpts">Custom Post Types &amp; Fields</a>
+    <a href="#assets">Asset Pipeline</a>
+    <a href="#templates">Template Mapping</a>
+    <a href="#forms">Forms</a>
+    <a href="#seo-perf">SEO, Performance &amp; Security</a>
+    <a href="#build-order">Build Order</a>
+  </aside>
+
+  <main>
+    <div class="doc-head">
+      <span class="eyebrow">Implementation Reference</span>
+      <h1>NAZZTEC — WordPress Build Spec</h1>
+      <p>A custom-coded WordPress theme built directly from whichever homepage concept the client selects (Demo 1, 2, or 3) — the existing HTML/CSS/JS drops into PHP templates largely as-is, with Advanced Custom Fields (ACF) powering the dynamic content. This is the construction spec for that build; treat the chosen demo's HTML file as the visual and content source of truth.</p>
+    </div>
+
+    <button class="nav-toggle-doc" id="tocToggle">Jump to section ▾</button>
+
+    <section class="doc-section" id="overview">
+      <h2>Overview</h2>
+      <p class="lede">All three demos share identical content structure (hero, global presence, 8-domain capability index, staffing, why-NAZZTEC, frameworks, digital transformation, engagement models, industries, CTA, footer) — only the visual system differs. That means this spec applies unchanged regardless of which demo the client picks; only the CSS file and a handful of icon/markup details change.</p>
+      <div class="note"><b>Why custom-coded, not a page builder —</b> the demos are already fully-built static HTML/CSS/JS with no framework dependency. Converting that directly into PHP templates is faster and pixel-exact. The trade-off: content edits go through WordPress admin forms (ACF fields), not a visual drag-and-drop canvas. Confirm that's acceptable to the client before starting.</div>
+    </section>
+
+    <section class="doc-section" id="stack">
+      <h2>Stack &amp; Plugins</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Component</th><th>Choice</th><th>Notes</th></tr>
+          <tr><td>WordPress</td><td>Latest stable (6.x)</td><td>Standard install, no multisite needed</td></tr>
+          <tr><td>PHP</td><td>8.1+</td><td>Required by current ACF Pro and most modern hosts</td></tr>
+          <tr><td>Custom fields</td><td><b>ACF Pro</b></td><td>Repeater fields for Services/Locations/Insights categories; Options Page for global settings (footer, social links)</td></tr>
+          <tr><td>SEO</td><td>Yoast SEO or RankMath</td><td>Either is fine — pick whichever the agency/client already has a license for</td></tr>
+          <tr><td>Forms</td><td>WPForms (or Contact Form 7)</td><td>Powers "Talk to an Expert," "Request Talent," "Start a Conversation"</td></tr>
+          <tr><td>Caching</td><td>WP Rocket or W3 Total Cache</td><td>Static homepage content caches well; purge on content updates</td></tr>
+          <tr><td>Security</td><td>Wordfence or Sucuri</td><td>Firewall + malware scanning, standard for any client-facing WP site</td></tr>
+          <tr><td>Backups</td><td>UpdraftPlus or host-native</td><td>Daily automated backups, off-site storage</td></tr>
+          <tr><td>Image optimization</td><td>ShortPixel or Imagify</td><td>Especially important for the hero photography</td></tr>
+        </table>
+      </div>
+      <div class="warn"><b>Ongoing responsibility —</b> unlike Webflow, WordPress core, theme, and every plugin need regular updates and security patching. Confirm with the client up front who owns this after launch (agency retainer vs. client's own team).</div>
+    </section>
+
+    <section class="doc-section" id="structure">
+      <h2>Theme File Structure</h2>
+      <p class="lede">A classic (non-block) custom theme, since the source is hand-written HTML/CSS/JS rather than Gutenberg blocks.</p>
+      <div class="tree"><span class="el">/wp-content/themes/nazztec/</span>
+  <span class="cls">style.css</span>              <span class="el">theme header comment + the demo's CSS, ported in</span>
+  <span class="cls">functions.php</span>          <span class="el">enqueue assets, register CPTs/menus, ACF options page</span>
+  <span class="cls">header.php</span>             <span class="el">&lt;head&gt;, opening &lt;body&gt;, site nav (from the demo's &lt;header&gt;)</span>
+  <span class="cls">footer.php</span>             <span class="el">footer markup + closing tags + wp_footer()</span>
+  <span class="cls">front-page.php</span>         <span class="el">the homepage — loops the ACF/CPT data into the demo's sections</span>
+  <span class="cls">page-staffing.php</span>      <span class="el">Staff Augmentation page template</span>
+  <span class="cls">page-about.php</span>         <span class="el">About Us page template</span>
+  <span class="cls">page-contact.php</span>       <span class="el">Contact page template (form embed)</span>
+  <span class="cls">single-service.php</span>     <span class="el">Service detail template (one per capability)</span>
+  <span class="cls">archive-insights.php</span>   <span class="el">Insights index</span>
+  <span class="cls">single-insight.php</span>     <span class="el">Insight article template</span>
+  <span class="cls">template-parts/</span>
+    <span class="el">section-hero.php</span>
+    <span class="el">section-flagship.php</span>
+    <span class="el">section-presence.php</span>
+    <span class="el">section-services.php</span>
+    <span class="el">section-staffing.php</span>
+    <span class="el">section-why.php</span>
+    <span class="el">section-frameworks.php</span>
+    <span class="el">section-digital.php</span>
+    <span class="el">section-engagement.php</span>
+    <span class="el">section-industries.php</span>
+    <span class="el">section-cta.php</span>
+  <span class="cls">assets/</span>
+    <span class="el">css/main.css</span>          <span class="el">the demo's &lt;style&gt; block, extracted</span>
+    <span class="el">js/main.js</span>            <span class="el">the demo's &lt;script&gt; block, extracted</span>
+    <span class="el">images/</span></div>
+      <div class="note">Splitting the homepage into <span class="code">template-parts/section-*.php</span> (one file per section) makes it trivial to reuse sections across pages later, and keeps <span class="code">front-page.php</span> to a short list of <span class="code">get_template_part()</span> calls.</div>
+    </section>
+
+    <section class="doc-section" id="cpts">
+      <h2>Custom Post Types &amp; ACF Fields</h2>
+      <p class="lede">Three content types, matching the Webflow CMS spec 1:1 so nothing is re-designed if the client later migrates between platforms.</p>
+
+      <h3 class="sub">CPT: <span class="code">service</span> <span class="tag">/services/{slug}</span></h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Field (ACF name)</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Title <span class="code">post_title</span></td><td>Native</td><td>e.g. "Cybersecurity, Risk &amp; Compliance"</td></tr>
+          <tr><td>Slug</td><td>Native</td><td>Auto from title</td></tr>
+          <tr><td><span class="code">reference_code</span></td><td>Text</td><td>CRC, TAA, PRC, BCR, CID, MSV, DTA, PCS</td></tr>
+          <tr><td><span class="code">short_description</span></td><td>Textarea</td><td>≤160 chars — capability index card summary</td></tr>
+          <tr><td><span class="code">display_order</span></td><td>Number</td><td>Controls index sort order</td></tr>
+          <tr><td><span class="code">category</span></td><td>Select</td><td>Cybersecurity &amp; Risk / Audit &amp; Assurance / Cloud &amp; Infra / Managed Services / Digital &amp; Data / Consulting</td></tr>
+          <tr><td><span class="code">icon</span></td><td>Image (SVG) or Icon Picker</td><td>24×24 line icon, matches the chosen demo's icon set</td></tr>
+          <tr><td><span class="code">hero_text</span></td><td>Text</td><td>Service detail page hero line</td></tr>
+          <tr><td><span class="code">overview</span></td><td>WYSIWYG</td><td>Detail page intro</td></tr>
+          <tr><td><span class="code">capabilities</span></td><td>Repeater (text)</td><td>Bulleted list — detail page</td></tr>
+          <tr><td><span class="code">benefits</span></td><td>Repeater (text)</td><td>Bulleted list — detail page</td></tr>
+        </table>
+      </div>
+
+      <h3 class="sub">CPT: <span class="code">location</span> <span class="tag">Global Presence section</span></h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Title</td><td>Native</td><td>India / Saudi Arabia / United States</td></tr>
+          <tr><td><span class="code">country_code</span></td><td>Text</td><td>IN / SA / US</td></tr>
+          <tr><td><span class="code">role_description</span></td><td>Textarea</td><td>"Offshore delivery and technology…"</td></tr>
+          <tr><td><span class="code">display_order</span></td><td>Number</td><td>01 / 02 / 03</td></tr>
+        </table>
+      </div>
+      <div class="note">Only three items, unlikely to grow — a CPT is still cleaner than hardcoding, but an ACF <b>Options Page repeater</b> is an equally valid lighter-weight alternative if the developer prefers one less post type.</div>
+
+      <h3 class="sub">Content: <span class="code">post</span> (native) + taxonomy <span class="code">insight_category</span> <span class="tag">/insights/{slug}</span></h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Field</th><th>Type</th><th>Notes</th></tr>
+          <tr><td>Title, Slug, Date, Author</td><td>Native WP</td><td>Use built-in post fields — no need for a custom CPT here</td></tr>
+          <tr><td>Category</td><td>Native taxonomy</td><td>Register <span class="code">insight_category</span> as a custom taxonomy</td></tr>
+          <tr><td>Featured Image</td><td>Native</td><td>Thumbnail for cards</td></tr>
+          <tr><td><span class="code">excerpt</span></td><td>Native excerpt</td><td>Card summary</td></tr>
+          <tr><td>Content</td><td>Native <span class="code">the_content()</span></td><td>Article body via block/classic editor</td></tr>
+        </table>
+      </div>
+      <div class="note">Not required for the first launch per the client's page-priority list — register the taxonomy and template now so <b>Insights</b> in the nav isn't a dead link, but it can ship with 1–2 placeholder posts.</div>
+
+      <h3 class="sub">ACF Options Page <span class="tag">functions.php: acf_add_options_page()</span></h3>
+      <p style="color:var(--slate); font-size:.92rem;">Global, site-wide fields that don't belong to any single post: footer About text, social links (LinkedIn/X), contact email, phone, and the Industries placeholder list (repeater of text + icon, flagged in the admin UI as "pending client confirmation").</p>
+    </section>
+
+    <section class="doc-section" id="assets">
+      <h2>Asset Pipeline</h2>
+      <p class="lede">The demo files are single self-contained HTML documents with inline <span class="code">&lt;style&gt;</span> and <span class="code">&lt;script&gt;</span>. Extract them once, then enqueue properly — never leave inline blocks in the theme.</p>
+      <ol class="steps">
+        <li><b>01</b> Copy everything between <span class="code">&lt;style&gt;</span>/<span class="code">&lt;/style&gt;</span> from the chosen demo into <span class="code">assets/css/main.css</span> verbatim.</li>
+        <li><b>02</b> Copy everything between <span class="code">&lt;script&gt;</span>/<span class="code">&lt;/script&gt;</span> into <span class="code">assets/js/main.js</span> verbatim.</li>
+        <li><b>03</b> Register both in <span class="code">functions.php</span> using <span class="code">wp_enqueue_style</span> / <span class="code">wp_enqueue_script</span> — see snippet below.</li>
+        <li><b>04</b> Keep the Google Fonts <span class="code">&lt;link&gt;</span> tags in <span class="code">header.php</span>'s <span class="code">&lt;head&gt;</span> exactly as in the source demo.</li>
+      </ol>
+      <div class="codeblock"><span class="cmt">// functions.php</span>
+<span class="fn">function</span> nazztec_enqueue_assets() {
+    wp_enqueue_style( <span class="str">'nazztec-main'</span>, get_template_directory_uri() . <span class="str">'/assets/css/main.css'</span>, [], <span class="str">'1.0.0'</span> );
+    wp_enqueue_script( <span class="str">'nazztec-main'</span>, get_template_directory_uri() . <span class="str">'/assets/js/main.js'</span>, [], <span class="str">'1.0.0'</span>, <span class="fn">true</span> );
+}
+add_action( <span class="str">'wp_enqueue_scripts'</span>, <span class="str">'nazztec_enqueue_assets'</span> );</div>
+      <div class="note">The JS is already framework-free vanilla (IntersectionObserver reveals, scroll-spy, canvas animations, mousemove tilt) — it needs zero rewriting to run inside WordPress, since it only queries DOM elements by class/ID that the PHP templates will still output identically.</div>
+    </section>
+
+    <section class="doc-section" id="templates">
+      <h2>Template Mapping</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Demo section (by <span class="code">id</span>)</th><th>Template part</th><th>Data source</th></tr>
+          <tr><td><span class="code">#hero</span></td><td><span class="code">section-hero.php</span></td><td>Static content + ACF Options (rotating eyebrow words)</td></tr>
+          <tr><td><span class="code">#flagship</span> <span class="pill">Demo 1 only</span></td><td><span class="code">section-flagship.php</span></td><td>Static — three fixed pillars</td></tr>
+          <tr><td><span class="code">#presence</span></td><td><span class="code">section-presence.php</span></td><td><span class="code">WP_Query</span> over <span class="code">location</span> CPT, ordered by <span class="code">display_order</span></td></tr>
+          <tr><td><span class="code">#services</span></td><td><span class="code">section-services.php</span></td><td><span class="code">WP_Query</span> over <span class="code">service</span> CPT, ordered by <span class="code">display_order</span></td></tr>
+          <tr><td><span class="code">#staffing</span></td><td><span class="code">section-staffing.php</span></td><td>Static content + ACF Options (talent domain chips)</td></tr>
+          <tr><td><span class="code">#why</span></td><td><span class="code">section-why.php</span></td><td>Static — four fixed cards</td></tr>
+          <tr><td><span class="code">#frameworks</span></td><td><span class="code">section-frameworks.php</span></td><td>Static — five fixed framework plates</td></tr>
+          <tr><td><span class="code">#statement</span> <span class="pill">Demo 1 only</span></td><td><span class="code">section-statement.php</span></td><td>Static, pulls the About copy from ACF Options</td></tr>
+          <tr><td><span class="code">#digital</span></td><td><span class="code">section-digital.php</span></td><td>Static — five fixed capability tiles</td></tr>
+          <tr><td><span class="code">#engagement</span></td><td><span class="code">section-engagement.php</span></td><td>Static — four fixed engagement models</td></tr>
+          <tr><td><span class="code">#industries</span></td><td><span class="code">section-industries.php</span></td><td>ACF Options repeater, rendered with the "pending confirmation" badge until the client confirms</td></tr>
+          <tr><td><span class="code">#cta</span></td><td><span class="code">section-cta.php</span></td><td>Static + WPForms/mailto link</td></tr>
+          <tr><td><span class="code">&lt;footer&gt;</span></td><td><span class="code">footer.php</span></td><td>ACF Options (About text, social links) + <span class="code">wp_nav_menu()</span> for footer columns</td></tr>
+        </table>
+      </div>
+      <div class="note">"Static" sections use content baked into the template rather than a CPT/field — they're fixed lists (four Why-NAZZTEC pillars, five frameworks, etc.) that don't need to be independently editable in the admin for launch. Wrap them in ACF fields later only if the client asks to edit that copy without a developer.</div>
+    </section>
+
+    <section class="doc-section" id="forms">
+      <h2>Forms</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Form</th><th>Trigger</th><th>Fields</th><th>Notify</th></tr>
+          <tr><td>Talk to an Expert</td><td>Header CTA + hero button</td><td>Name, email, company, message</td><td>Sales inbox</td></tr>
+          <tr><td>Request Talent</td><td>Staffing section</td><td>Name, email, company, talent domain (dropdown), timeline</td><td>Staffing team inbox</td></tr>
+          <tr><td>Start a Conversation</td><td>Closing CTA section</td><td>Name, email, company, service interest, message</td><td>Sales inbox</td></tr>
+        </table>
+      </div>
+      <div class="note">All three can point at one WPForms form with a hidden "source" field set per placement, if the client would rather manage one form than three.</div>
+    </section>
+
+    <section class="doc-section" id="seo-perf">
+      <h2>SEO, Performance &amp; Security</h2>
+      <ul class="plain" style="margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:8px; max-width:70ch;">
+        <li>Set meta title/description per page via Yoast/RankMath — pre-fill from each service's <span class="code">hero_text</span> field for service detail pages.</li>
+        <li>Generate an XML sitemap (Yoast/RankMath handle this automatically) and submit to Google Search Console at launch.</li>
+        <li>Lazy-load the hero and section photography; the existing CSS already avoids layout-shift-prone patterns.</li>
+        <li>Enable page caching but exclude the Contact/forms pages from full-page cache to avoid stale nonce issues.</li>
+        <li>Force HTTPS, enable a Web Application Firewall (Wordfence/Sucuri), and disable XML-RPC if unused.</li>
+        <li>Set up automated daily backups with at least 14-day retention, stored off-server.</li>
+      </ul>
+    </section>
+
+    <section class="doc-section" id="build-order">
+      <h2>Build Order</h2>
+      <ol class="steps">
+        <li><b>01</b> Provision hosting, install WordPress, install ACF Pro + the plugin stack above</li>
+        <li><b>02</b> Scaffold the theme (<span class="code">style.css</span> header, <span class="code">functions.php</span>, blank templates)</li>
+        <li><b>03</b> Extract CSS/JS from the chosen demo into <span class="code">assets/</span> and enqueue them</li>
+        <li><b>04</b> Register the <span class="code">service</span> and <span class="code">location</span> CPTs, the <span class="code">insight_category</span> taxonomy, and the ACF field groups + Options Page</li>
+        <li><b>05</b> Build <span class="code">header.php</span> / <span class="code">footer.php</span> first — every page depends on them</li>
+        <li><b>06</b> Enter real content into the CMS (start with <span class="code">service</span> — it's the load-bearing content type)</li>
+        <li><b>07</b> Build <span class="code">front-page.php</span> section by section, wiring each <span class="code">template-parts/section-*.php</span> to its data source per the mapping table above</li>
+        <li><b>08</b> Build <span class="code">single-service.php</span>, then the static pages (Staffing, About, Contact)</li>
+        <li><b>09</b> Wire up WPForms and confirm email delivery for all three forms</li>
+        <li><b>10</b> Responsive QA at 1440 / 991 / 767 / 479px; confirm the JS interactions (reveals, scroll-spy, tilt) still fire correctly inside WP's markup</li>
+        <li><b>11</b> Run SEO/performance/security setup from the section above</li>
+        <li><b>12</b> Push to staging for client review, then cut DNS over at go-live</li>
+      </ol>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  var toggle = document.getElementById('tocToggle');
+  var toc = document.getElementById('toc');
+  if (toggle){
+    toggle.addEventListener('click', function(){ toc.classList.toggle('open'); });
+  }
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var sections = links.map(function(l){ return document.querySelector(l.getAttribute('href')); });
+  function onScroll(){
+    var y = window.scrollY + 120;
+    var active = 0;
+    sections.forEach(function(s, i){ if (s && s.offsetTop <= y) active = i; });
+    links.forEach(function(l, i){ l.classList.toggle('active', i === active); });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
